@@ -1,4 +1,4 @@
-# single layer calculation of a Neural Networl
+# single layer calculation of a Neural Network
 
 inputs = [1, 2, 3, 2.5]
 
@@ -9,6 +9,14 @@ weights = [[0.2, 0.8, -0.5, 1],
 biases = [2, 3, 0.5]
 
 layer_outputs = [] # Output of current layer
+
+'''
+out put calc for each of the three neuron:
+    output[0] = weight[0][0] * input[0] + weight[0][1] * input[1] ... + bias
+    output[1] = weight[1][0] ...
+    output[2] = ...
+using zip() for dotproduct calc as above
+'''
 
 for neuron_weights, neuron_bias in zip(weights, biases):
     neuron_output = 0 # Output of given neuron
