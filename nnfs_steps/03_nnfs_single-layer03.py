@@ -15,8 +15,7 @@ biases = [2.0, 3.0, 0.5]
 
 '''
 for dotproduct of batch input one array needs to be transposed
-- in this case done via transpose of weights array
-this can be done using numpy arrays functions
+- in this case done via transpose of weights array using numpy arrays functions
 '''
 
 output = np.dot(inputs, np.array(weights).T) + biases

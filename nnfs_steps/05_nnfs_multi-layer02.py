@@ -1,4 +1,4 @@
-# multi layer calculation of a Neural Network with batch input using OOP
+# multi layer calculation of a Neural Network with batch input using OOP adding activation function
 
 import numpy as np
 
@@ -26,8 +26,8 @@ layer_One = Layer_Dense(4, 5)
 layer_Two = Layer_Dense(5, 2)
 
 # pass data through layers
-layer_One.forward(X)
+layer_One.forward(X) # original input is X
 print(layer_One.output)
 
-layer_Two.forward(layer_One.output)
+layer_Two.forward(layer_One.output) # second layer input is first layer output
 print(layer_Two.output)
