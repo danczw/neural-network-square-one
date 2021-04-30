@@ -15,7 +15,7 @@ weights_One = [[0.2, 0.8, -0.5, 1.0],
            [0.5, -0.91, 0.26, -0.5],
            [-0.26, -0.27, 0.17, 0.87]]
 
-# added a second layer with sets of weights and biases
+# added a second layer with 3 neurons and respective sets of weights and biases
 biases_Two = [-1.0, 2.0, -0.5]
 weights_Two = [[0.1, -0.14, 0.5],
                [0.5, 0.12, -0.33],

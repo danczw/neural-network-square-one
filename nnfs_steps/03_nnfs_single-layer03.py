@@ -25,6 +25,8 @@ using np.dot() for dotproduct calculation as above
 Note: size at index 1 of first argument array needs to match size at index 0
     of second argument array
 = > for dotproduct of batch input one array needs to be transposed
+    - reason: again, size at index 1 of first argument array needs to match
+        size at index 0 of second argument array
     - in this case done via transpose of weights array using numpy arrays functions
 '''
 
