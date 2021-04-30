@@ -4,12 +4,17 @@ Neural Network with batch input
     - added activation function for first layer
 '''
 import numpy as np
+import matplotlib.pyplot as plt
 
 # TODO: delete later
 import nnfs
 from nnfs.datasets import spiral_data
 nnfs.init()
 X, y = spiral_data(100, 3)
+
+plt.scatter(X[:, 0], X[:, 1])
+plt.show()
+
 # define input
 # X = [[1.0, 2.0, 3.0, 2.5],
 #      [2.0, 5.0, -1.0, 2.0],
