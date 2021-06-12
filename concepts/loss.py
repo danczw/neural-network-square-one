@@ -1,6 +1,7 @@
 '''
-Calculating Loss with Categorical Cross-Entropy
-    - abc
+Calculating Neural Network Loss with Categorical Cross-Entropy
+    - loss as measurement of error
+    - with higher confidence in prediction (softmax_output) loss is lower and vice versa 
 '''
 
 import math
