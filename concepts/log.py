@@ -1,10 +1,11 @@
-"""
+'''
 What is a log? What does it do?
 
 solving for x (natural log with base eulers number e):
 e ** x = b
 where b is input value
-"""
+'''
+
 import numpy as np
 import math
 
