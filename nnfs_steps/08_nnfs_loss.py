@@ -5,15 +5,15 @@ Neural Network with batch input
 '''
 import numpy as np
 
-# # TODO: delete later
+# TODO: delete later
 import nnfs
 from nnfs.datasets import spiral_data
 nnfs.init()
 X, y = spiral_data(samples=100, classes=3)
-# # define input
-# # X = [[1.0, 2.0, 3.0, 2.5],
-# #      [2.0, 5.0, -1.0, 2.0],
-# #      [-1.5, 2.7, 3.3, -0.8]]
+# define input
+# X = [[1.0, 2.0, 3.0, 2.5],
+#      [2.0, 5.0, -1.0, 2.0],
+#      [-1.5, 2.7, 3.3, -0.8]]
 
 # define class to initialize layer
 class Layer_Dense:

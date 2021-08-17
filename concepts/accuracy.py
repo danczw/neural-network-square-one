@@ -13,6 +13,8 @@ softmax_output_array = np.array([[0.7, 0.1, 0.2],
 # get predictions by finding index of highest class confidence
 predictions = np.argmax(softmax_output_array, axis=1)
 
+print(f"predictions: {predictions}")
+
 # accuracy is the mean difference between predicted and "real" (class_target) value
 accuracy = np.mean(predictions == class_target)
 
