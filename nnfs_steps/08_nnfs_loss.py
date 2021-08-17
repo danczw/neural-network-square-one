@@ -5,15 +5,13 @@ Neural Network with batch input
 '''
 import numpy as np
 
-# TODO: delete later
+# import basic dataset
 import nnfs
 from nnfs.datasets import spiral_data
 nnfs.init()
+
+#define input
 X, y = spiral_data(samples=100, classes=3)
-# define input
-# X = [[1.0, 2.0, 3.0, 2.5],
-#      [2.0, 5.0, -1.0, 2.0],
-#      [-1.5, 2.7, 3.3, -0.8]]
 
 # define class to initialize layer
 class Layer_Dense:
@@ -60,25 +58,3 @@ class Loss_CategoricalCrossentropy(Loss): # calculate categorical cross entropy
 
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
-
-'''
-initialize layers and activation function
-'''
-layer_One = Layer_Dense(2, 3)
-activation_One = Activation_ReLU()
-layer_Two = Layer_Dense(3, 3)
-activation_Two = Activation_Softmax()
-
-# pass data through layer
-layer_One.forward(X) # original input is X
-activation_One.forward(layer_One.output) # pass output of layer one into activation function
-layer_Two.forward(activation_One.output)
-activation_Two.forward(layer_Two.output)
-
-print(activation_Two.output[:5])
-
-# calculate loss
-loss_function = Loss_CategoricalCrossentropy()
-loss = loss_function.calculate(activation_Two.output, y)
-
-print(f"Loss: {loss}")
