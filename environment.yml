@@ -1,0 +1,8 @@
+name: nnfs
+channels:
+  - default
+dependencies:
+  - python=3.9
+  - numpy=1.20
+  - matplotlib=3.4
+  # - nnfs => install conda environment, change to env, then run pip install nnfs 
