@@ -2,20 +2,30 @@
 Optimization of Neural Network weights and biases
 using random guessing
     - semi random guessing weights and biases can lead to better performance
-    - >>> slow and only for very basic datasets <<<
+    - >>> slow and only for very basic datasets, i.e. vertical data testset <<<
 '''
 import matplotlib.pyplot as plt
 import numpy as np
 
 import nnfs
-from nnfs.datasets import vertical_data
-
-# import basic dataset
 nnfs.init()
-X, y = vertical_data(samples=100, classes=3)
 
-plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap="brg")
-# plt.show() # TODO: uncomment to view data
+dataset = "vertical" # TODO: choose between "vertical" and "spiral" dataset
+
+if dataset == "vertical":
+    # import vertical dataset
+    from nnfs.datasets import vertical_data
+    X, y = vertical_data(samples=100, classes=3)
+
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap="brg")
+    # plt.show() # TODO: uncomment to view data
+elif dataset == "spiral":
+    # import vertical dataset
+    from nnfs.datasets import spiral_data
+    X, y = spiral_data(samples=100, classes=3)
+
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap="brg")
+    plt.show() # TODO: uncomment to view data
 
 # define class to initialize layer
 class Layer_Dense:
