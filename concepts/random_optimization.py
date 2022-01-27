@@ -10,22 +10,22 @@ import numpy as np
 import nnfs
 nnfs.init()
 
-dataset = "vertical" # TODO: choose between "vertical" and "spiral" dataset
+dataset = 'vertical' # TODO: choose between 'vertical' and 'spiral' dataset
 
-if dataset == "vertical":
+if dataset == 'vertical':
     # import vertical dataset
     from nnfs.datasets import vertical_data
     X, y = vertical_data(samples=100, classes=3)
 
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap="brg")
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
     # plt.show() # TODO: uncomment to view data
-elif dataset == "spiral":
+elif dataset == 'spiral':
     # import vertical dataset
     from nnfs.datasets import spiral_data
     X, y = spiral_data(samples=100, classes=3)
 
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap="brg")
-    plt.show() # TODO: uncomment to view data
+    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
+    # plt.show() # TODO: uncomment to view data
 
 # define class to initialize layer
 class Layer_Dense:
@@ -83,6 +83,10 @@ activation_Two = Activation_Softmax()
 
 loss_function = Loss_CategoricalCrossentropy()
 
+'''
+run n iterations with random generated weights
+'''
+
 # initialize loss and accuracy
 lowest_loss = 9999999
 highest_accuracy = 0
@@ -135,4 +139,4 @@ for iteration in range(iterations):
         layer_Two.weights = best_layerTwo_weights.copy()
         layer_Two.biases = best_layerTwo_biases.copy()
 
-print(f"---\nfinal accuracy: {round(highest_accuracy * 100, 2)}%")
+print(f'---\nfinal accuracy: {round(highest_accuracy * 100, 2)}%')

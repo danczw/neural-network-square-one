@@ -22,7 +22,7 @@ weights_Two = [[0.1, -0.14, 0.5],
                [-0.44, 0.73, -0.13]]
 
 '''
-"manual" calculation adding a second layer of 3 neurons
+'manual' calculation adding a second layer of 3 neurons
 output of layer one is input of layer two with its own weights and biases
 '''
 

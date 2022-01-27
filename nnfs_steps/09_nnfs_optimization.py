@@ -3,6 +3,12 @@ multi layer calculation of a
 Neural Network with batch input
     - added optimization
 '''
+'''
+multi layer calculation of a
+Neural Network with batch input
+    - added loss function
+    - added accuracy
+'''
 import numpy as np
 
 # import basic dataset
@@ -79,4 +85,12 @@ print(activation_Two.output[:5])
 loss_function = Loss_CategoricalCrossentropy()
 loss = loss_function.calculate(activation_Two.output, y)
 
-print(f"Loss: {loss}")
+print(f'Loss: {loss}')
+
+# calculate accuracy from output of layer two activation
+predictions = np.argmax(activation_Two.output, axis=1)
+if len(y.shape) == 2: # convert targets if one-hot encoded
+    y = np.argmax(y, axis=1)
+accuracy = np.mean(predictions == y)
+
+print ('acc:', accuracy)
