@@ -2,6 +2,7 @@
 multi layer calculation of a
 Neural Network with batch input
     - added loss function
+    - added accuracy
 '''
 import numpy as np
 
@@ -58,3 +59,33 @@ class Loss_CategoricalCrossentropy(Loss): # calculate categorical cross entropy
 
         negative_log_likelihoods = -np.log(correct_confidences)
         return negative_log_likelihoods
+
+'''
+initialize layers and activation function
+'''
+layer_One = Layer_Dense(2, 3)
+activation_One = Activation_ReLU()
+layer_Two = Layer_Dense(3, 3)
+activation_Two = Activation_Softmax()
+
+# pass data through layer
+layer_One.forward(X) # original input is X
+activation_One.forward(layer_One.output) # pass output of layer one into activation function
+layer_Two.forward(activation_One.output)
+activation_Two.forward(layer_Two.output)
+
+print(activation_Two.output[:5])
+
+# calculate loss
+loss_function = Loss_CategoricalCrossentropy()
+loss = loss_function.calculate(activation_Two.output, y)
+
+print(f"Loss: {loss}")
+
+# calculate accuracy from output of layer two activation
+predictions = np.argmax(activation_Two.output, axis=1)
+if len(y.shape) == 2: # convert targets if one-hot encoded
+    y = np.argmax(y, axis=1)
+accuracy = np.mean(predictions == y)
+
+print ('acc:', accuracy)
