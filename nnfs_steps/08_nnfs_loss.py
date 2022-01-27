@@ -80,7 +80,7 @@ print(activation_Two.output[:5])
 loss_function = Loss_CategoricalCrossentropy()
 loss = loss_function.calculate(activation_Two.output, y)
 
-print(f"Loss: {loss}")
+print(f'Loss: {loss}')
 
 # calculate accuracy from output of layer two activation
 predictions = np.argmax(activation_Two.output, axis=1)
