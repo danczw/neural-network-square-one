@@ -41,15 +41,18 @@ Each step builds on previous step and adds a new concept:
     * added activation function for output layer (softmax)
 08. [Multi layer calculation of a NN](nnfs_steps\08_nnfs_loss.py)
     * added loss function
-09. ~~Optimization of a NN~~ << coming soon >>
+09. [Random optimization of a NN](nnfs_steps\09_nnfs_random-optimization.py)
+    * added random weights and bias optimization
+10. ~~Backpropagation of a NN~~ << coming soon >>
 
 ---
 
 ## Concepts
-* [Log](concepts\log.py)
-* [Loss](concepts\loss.py)
-* [Accuracy](concepts\accuracy.py)
-* [Random Model Optimization](concepts\random_optimization.py)
+* [Log](concepts\01_log.py)
+* [Loss](concepts\02_loss.py)
+* [Accuracy](concepts\03_accuracy.py)
+* [Backpropagation Single Neuron](concepts\04_backpropagation_single-neuron.py)
+* [Backpropagation Single Layer](concepts\05_backpropagation_single-layer.py)
 
 ---
 
