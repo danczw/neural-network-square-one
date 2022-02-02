@@ -1,149 +1,77 @@
 '''
 Neural Network backpropagation
-    - calculating the impact of variables (weights & biases) on model's loss
-    - demonstrated on a single neuron
+    - calculating the impact of variables (w & biases) on model's loss
+    - demonstrated on a single layer
 '''
 
-i = [1.0, -2.0, 3.0] # input values
-w = [-3.0, -1.0, 2.0] # weight for each input
-b = 1.0 # bias
+import numpy as np
+
+# passed gradient from next layer, for demonstration purposes
+dvalues = np.array([[1.0, 1.0, 1.0]])
+
+# 4 weights per each of the 4 input, for each of 3 neurons (transposed) 
+w = np.array([[0.2, 0.8, -0.5, 1],
+              [0.5, -0.91, 0.26, -0.5],
+              [-0.26, -0.27, 0.17, 0.87]]).T
+
+# weights array is formatted so that rows contain weights related to each input
+# -> weights for all neurons for the given input
+print('transposed weights array:\n', w)
+
+# Sum weights related to the input (same index in each w array belongs to same input value over all neurons)
+# multiplied by gradient related to the neuron (corresponding neuron gradient for each input)
+di0 = sum([w[0][0] * dvalues[0][0],
+           w[0][1] * dvalues[0][1],
+           w[0][2] * dvalues[0][2]])
+
+di1 = sum([w[1][0] * dvalues[0][0],
+           w[1][1] * dvalues[0][1],
+           w[1][2] * dvalues[0][2]])
+
+di2 = sum([w[2][0] * dvalues[0][0],
+           w[2][1] * dvalues[0][1],
+           w[2][2] * dvalues[0][2]])
+
+di3 = sum([w[3][0] * dvalues[0][0],
+           w[3][1] * dvalues[0][1],
+           w[3][2] * dvalues[0][2]])
 
 '''
-forward pass
+simplification of previous step due to Numpy array type
 '''
-# weighting inputs
-wi0 = i[0] * w[0] # weighted input one
-wi1 = i[1] * w[1] # weighted input two
-wi2 = i[2] * w[2] # weighted input three
+di0 = sum(w[0]*dvalues[0])
+di1 = sum(w[1]*dvalues[0])
+di2 = sum(w[2]*dvalues[0])
+di3 = sum(w[3]*dvalues[0])    
 
-print(wi0, wi1, wi2, '          (original weighted inputs)')
 
-# adding weighted inputs and bias
-no = wi0 + wi1 + wi2 + b # neuron output
-print(no, '                   (original neuron output)')
-
-# ReLU activation function
-y = max(no, 0)
-print(y, '                   (original loss)')
+dinputs = np.array([di0, di1, di2, di3])
 
 '''
-backpropagation
-    - how much does each input, weight and bias impact the output?
-    - forward pass can be writen as:
-    output =
-        max(
-            (inputs[0] * weights[0])
-            + (inputs[1] * weights[1])
-            + (inputs[2] * weights[2])
-            + bias
-        , 0)
-
-    => using chain rule and (partial) derivatives to calculate impact
-        - calculate derivative of loss function
-        - use it to multiply with the derivative of the activation function
-            of the output layer
-        - use result to multiply by derivative of output layer, and so on,
-            through all of the hidden layers and activation functions
-        - inside these layers, derivative with respect ot weights and biases
-            will form gradients that are used to update weights and biases
-        - derivatives with respect to inputs will form gradient to chain
-            with previous layer which can caulcate the impact of its weights
-            and biases on the loss and backpropagate gradients on inputs further
+simplification of previous (two) steps due to Numpy array type
 
 Note:
-    - d in front of variable for derivative
-    - da_db => derivative of function a in respect to var b 
+    - for numpy dotproduct, neighbouring dimensions need to match
+    - shape of dvalues: (1, 3)
+    - shape of (currently transposed!) weights (4, 3)
+        => (1, 3) * (4, 3) = x
+    - therefore, weights needs to be transposed => (3, 4)
+        => (1, 3) * (3, 4) = ✓
 '''
-# for demonstration, neuron receives gradient of 1 from next layer
-dvalue = 1.0
+dinputs = np.dot(dvalues[0], w.T)
 
-# derivative of ReLU with respect to its input (1 if input is greater than 0, else 0) and chain rule
-drelu_dno = dvalue * (1.0 if no > 0 else 0.0)
-print(drelu_dno, '                   (drelu_dno)')
-
-# partial derivative of ReLU with respect to weighted inputs
-# Note: derivative of sum operation is always 1 in this case
-dsum_dwi0 = 1 # partial derivative of the sum (var 'no') with respect to the input for the first pair of inputs and weights
-drelu_dwi0 = drelu_dno * dsum_dwi0 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is ReLU
-
-dsum_dwi1 = 1 # partial derivative of the sum (var 'no') with respect to the input for the second pair of inputs and weights
-drelu_dwi1 = drelu_dno * dsum_dwi1 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is ReLU
-
-dsum_dwi2 = 1 # partial derivative of the sum (var 'no') with respect to the input for the third pair of inputs and weights
-drelu_dwi2 = drelu_dno * dsum_dwi2 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is ReLU
-
-dsum_db = 1 # partial derivative of the sum (var 'no') with respect to the input for the bias
-drelu_db = drelu_dno * dsum_db # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is ReLU
-
-print(drelu_dwi0, drelu_dwi1, drelu_dwi2, drelu_db, '       (drelu_dwiX, drelu_db)')
-
-# continue backwards to function befor the sum (var 'no') is weighting of inputs
-dwi_di0 = w[0] # partial derivative of the multiplication (var 'wi0') with respect to the first input
-drelu_di0 = drelu_dwi0 * dwi_di0 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
-
-dwi_dw0 = i[0] # partial derivative of the multiplication (var 'wi0') with respect to the first weight
-drelu_dw0 = drelu_dwi0 * dwi_dw0 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
-
-dwi_di1 = w[1] # partial derivative of the multiplication (var 'wi1') with respect to the second input
-drelu_di1 = drelu_dwi1 * dwi_di1 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
-
-dwi_dw1 = i[1] # partial derivative of the multiplication (var 'wi1') with respect to the second weight
-drelu_dw1 = drelu_dwi1 * dwi_dw1 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
-
-dwi_di2 = w[2] # partial derivative of the multiplication (var 'wi2') with respect to the third input
-drelu_di2 = drelu_dwi2 * dwi_di2 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
-
-dwi_dw2 = i[2] # partial derivative of the multiplication (var 'wi2') with respect to the third weight
-drelu_dw2 = drelu_dwi2 * dwi_dw2 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
-
-print(drelu_di0, drelu_dw0, drelu_di1, drelu_dw1, drelu_di2, drelu_dw2, \
-    '             (drelu_di1, drelu_dw1, ...)')
+print(dinputs, ' (gradient of the neuron function with respect to inputs)')
 
 '''
-simplification of previous steps on example of first input
-    drelu_di0 = drelu_dwi0 * dwi_di0            # where dwi_di0 = w[0]
-    drelu_di0 = drelu_dwi0 * w[0]               # where drelu_dwi0 = drelu_dno * dsum_dwi0
-    drelu_di0 = drelu_dno * dsum_dwi0 * w[0]    # where dsum_dwi0 = 1
-    drelu_di0 = drelu_dno * 1 * w[0]            # where drelu_dno = dvalue * (1.0 if no > 0 else 0.0)
-    drelu_di0 = dvalue * (1.0 if no > 0 else 0.0) * w[0]
+Neural Network backpropagation
+with batch processing 
 '''
+# passed gradient from next layer, for demonstration purposes
+dvalues_batch = np.array([[1., 1., 1.],
+                          [2., 2., 2.],
+                          [3., 3., 3.]])
 
-# partial derivatives combined into a vector make up gradients
-di = [drelu_di0, drelu_di1, drelu_di2] # gradients on inputs
-dw = [drelu_dw0, drelu_dw1, drelu_dw2] # gradients on weights
-db = drelu_db # gradient on bias - example includes only one bias
-
-print(di, dw, db, ' (input gradient, weight gradient, bias gradient)')
-
-'''
-apply fraction of gradients to values to decrease output (loss)
-
-Note:
-    - di excluded, as there is only a single neuron in a single layer
-    - with preceding layers, partial derivative with respect to
-        inputs would be calculated
-'''
-w[0] += -0.001 * dw[0]
-w[1] += -0.001 * dw[1]
-w[2] += -0.001 * dw[2]
-b += -0.001 * db
-
-print(w, b, '          (adjusted weights, bias)')
-
-'''
-effects to be viewed through another forward pass
-'''
-# weighting inputs
-wi0 = i[0] * w[0] # weighted input one
-wi1 = i[1] * w[1] # weighted input two
-wi2 = i[2] * w[2] # weighted input three
-
-print(wi0, wi1, round(wi2,3), ' (adjusted weighted inputs)')
-
-# adding weighted inputs and bias
-no = wi0 + wi1 + wi2 + b # neuron output
-print(no, '              (adjusted neuron output)')
-
-# ReLU activation function
-y = max(no, 0)
-print(y, '              (adjusted loss)')
+# Sum weights related to the input (same index in each w array belongs to same input value over all neurons)
+# multiplied by gradient related to the neuron (corresponding neuron gradient for each input)
+dinputs_batch = np.dot(dvalues_batch, w.T)
+print(dinputs_batch, ' (gradient of the neuron function with respect to batch inputs)')
