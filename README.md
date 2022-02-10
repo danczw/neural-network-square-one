@@ -55,7 +55,77 @@ The purpose of the concepts is to better understand changes in the different ste
 * [Accuracy](concepts\03_accuracy.py)
 * [Backpropagation Single Neuron](concepts\04_backpropagation_single-neuron.py)
 * [Backpropagation Single Layer](concepts\05_backpropagation_single-layer.py)
-* [Backpropagation Single Layer w optimization](concepts\05_backpropagation_single-layer_optimization.py)
+* [Backpropagation Single Layer w optimization](concepts\06_backpropagation_single-layer_optimization.py)
+* [Softmax Derivative and Jacobian matrix](concepts\07_softmax_derivative.py)
+
+---
+
+## Assets
+
+<br>
+
+**max() => ReLU activation derivative**
+
+<img src=".\assets\relu_derivative.PNG" alt="ReLU derivative" width="500"/>
+
+<br>
+
+**Categorical Cross-Entropy loss derivative**
+
+<img src=".\assets\cross_categorical_derivative.PNG" alt="Categorical Cross-Entropy loss derivative" width="500"/>
+
+> i — i-th sample in a set
+>
+> j — label/output index
+> 
+> L<sub>i</sub> — sample loss value
+> 
+> y — target values
+>
+> y-hat — predicted values
+
+<br>
+
+**Softmax activation derivative**
+
+<img src=".\assets\softmax_derivative.PNG" alt="Softmax activation derivative" width="500"/>
+
+> L — number of inputs
+>
+> S<sub>i,j</sub> — j-th Softmax’s output of i-th sample
+>
+> z — input array which is a list of input vectors (output vectors from the previous layer)
+> 
+> z<sub>i,j</sub> — j-th Softmax’s input of i-th sample
+> 
+> z<sub>i,k</sub> — k-th Softmax’s input of i-th sample
+
+
+<br>
+
+**Common Categorical Cross-entropy loss and Softmax activation derivative**
+
+<img src=".\assets\cross_categorical_softmax_derivative.PNG" alt="Categorical Cross-Entropy loss derivative" width="500"/>
+
+> i — i-th sample in a set
+>
+> j — label/output index
+> 
+> k — index of the target label (ground-true label)
+>
+> L<sub>i</sub> - sample loss value
+>
+> S<sub>i,j</sub> — j-th Softmax’s output of i-th sample
+>
+> y — target values
+>
+> y-hat — predicted values
+>
+> z — input array which is a list of input vectors (output vectors from the previous layer)
+>
+> z<sub>i,j</sub> — j-th Softmax’s input of i-th sample
+>
+> z<sub>i,k</sub> — k-th Softmax’s input of i-th sample
 
 ---
 
