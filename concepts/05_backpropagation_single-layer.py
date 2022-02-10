@@ -105,7 +105,7 @@ dbiases = np.sum(dvalues_batch, axis=0, keepdims=True) # keepdims keeps the grad
 print(dbiases, ' (gradient of the neuron function with respect to biases)')
 
 '''
-Activation function derivative
+Activation function derivative - README.md on mathematical concept
 '''
 # gradient of subsequent function, for demonstration purposes
 dvalues_batch = np.array([[1., 2., 3., 4.],
