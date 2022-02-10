@@ -11,32 +11,33 @@ b = 1.0 # bias
 '''
 forward pass
 '''
-# weighting inputs
+# 1st step: weighting inputs
 wi0 = i[0] * w[0] # weighted input one
 wi1 = i[1] * w[1] # weighted input two
 wi2 = i[2] * w[2] # weighted input three
 
 print(wi0, wi1, wi2, '          (original weighted inputs)')
 
-# adding weighted inputs and bias
+# 2nd step: adding weighted inputs and bias
 no = wi0 + wi1 + wi2 + b # neuron output
 print(no, '                   (original neuron output)')
 
-# ReLU activation function
+# 3rd step: ReLU activation function
 y = max(no, 0)
 print(y, '                   (original loss)')
 
 '''
 backpropagation
-    - how much does each input, weight and bias impact the output?
+    - how much does each input, weight and bias impact the output, i.e. the loss?
     - forward pass can be writen as:
-    output =
-        max(
-            (inputs[0] * weights[0])
-            + (inputs[1] * weights[1])
-            + (inputs[2] * weights[2])
-            + bias
-        , 0)
+        output =
+            max(
+                (inputs[0] * weights[0])
+                + (inputs[1] * weights[1])
+                + (inputs[2] * weights[2])
+                + bias
+            , 0)
+    - derivates are established in order from outer to inner functions 
 
     => using chain rule and (partial) derivatives to calculate impact
         - calculate derivative of loss function
@@ -57,11 +58,12 @@ Note:
 # for demonstration, neuron receives gradient of 1 from next layer
 dvalue = 1.0
 
-# derivative of ReLU with respect to its input (1 if input is greater than 0, else 0) and chain rule
+# derivative of ReLU (3rd step in forward pass) (drelu_dno) with respect to
+# its input (dno) is 1 if input is greater than 0, else 0, then using chain rule
 drelu_dno = dvalue * (1.0 if no > 0 else 0.0)
 print(drelu_dno, '                   (drelu_dno)')
 
-# partial derivative of ReLU with respect to weighted inputs
+# partial derivative of ReLU with respect to weighted inputs (2nd step in forward pass) 
 # Note: derivative of sum operation is always 1 in this case
 dsum_dwi0 = 1 # partial derivative of the sum (var 'no') with respect to the input for the first pair of inputs and weights
 drelu_dwi0 = drelu_dno * dsum_dwi0 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is ReLU
@@ -75,9 +77,9 @@ drelu_dwi2 = drelu_dno * dsum_dwi2 # chain rule - multiplying partial derivative
 dsum_db = 1 # partial derivative of the sum (var 'no') with respect to the input for the bias
 drelu_db = drelu_dno * dsum_db # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is ReLU
 
-print(drelu_dwi0, drelu_dwi1, drelu_dwi2, drelu_db, '       (drelu_dwiX, drelu_db)')
+print(drelu_dwi0, drelu_dwi1, drelu_dwi2, drelu_db, '       (drelu_dwi1, drelu_dwi2, drelu_dwi3, drelu_db)')
 
-# continue backwards to function befor the sum (var 'no') is weighting of inputs
+# continue backwards to function before the sum (1st step in forward pass) is weighting of inputs
 dwi_di0 = w[0] # partial derivative of the multiplication (var 'wi0') with respect to the first input
 drelu_di0 = drelu_dwi0 * dwi_di0 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
 
@@ -97,7 +99,7 @@ dwi_dw2 = i[2] # partial derivative of the multiplication (var 'wi2') with respe
 drelu_dw2 = drelu_dwi2 * dwi_dw2 # chain rule - multiplying partial derivative with the derivative of the subsequent function, which is partial derivative of ReLU
 
 print(drelu_di0, drelu_dw0, drelu_di1, drelu_dw1, drelu_di2, drelu_dw2, \
-    '             (drelu_di1, drelu_dw1, ...)')
+    '             (drelu_di1, drelu_dw1, drelu_di2, ...)')
 
 '''
 simplification of previous steps on example of first input

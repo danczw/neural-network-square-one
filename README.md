@@ -48,11 +48,14 @@ Each step builds on previous step and adds a new concept:
 ---
 
 ## Concepts
+The purpose of the concepts is to better understand changes in the different steps and add detailed explanations.
+
 * [Log](concepts\01_log.py)
 * [Loss](concepts\02_loss.py)
 * [Accuracy](concepts\03_accuracy.py)
 * [Backpropagation Single Neuron](concepts\04_backpropagation_single-neuron.py)
 * [Backpropagation Single Layer](concepts\05_backpropagation_single-layer.py)
+* [Backpropagation Single Layer w optimization](concepts\05_backpropagation_single-layer_optimization.py)
 
 ---
 
