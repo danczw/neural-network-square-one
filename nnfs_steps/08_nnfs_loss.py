@@ -37,24 +37,25 @@ class Activation_Softmax:
         self.output = probabilities
 
 # define class to initialize loss function
-class Loss: # calculate mean loss and pass forward
+class Loss:                                                             # calculate mean loss and pass forward
     def calculate(self, output, y):
         sample_losses = self.forward(output, y)
         data_loss = np.mean(sample_losses)
         return data_loss
 
 # define class to initialize categorical cross entropy
-class Loss_CategoricalCrossentropy(Loss): # calculate categorical cross entropy
+class Loss_CategoricalCrossentropy(Loss):                               # calculate categorical cross entropy
     def forward(self, y_pred, y_true):
         samples = len(y_pred)
-        # clip y_pred to prevent inf loss when calculating loss of y_pred = 0 => see loss.py for details
+        # clip y_pred to prevent inf loss when calculating loss of y_pred = 0
+        # => see loss.py for details
         y_pred_clipped = np.clip(y_pred, 1e-7, 1-1e-7)
 
         # dynamicaly handel confidences for different target var formatting:
         #   scalar values [1, 0] or one-hot-encoded values[[0, 1], [1, 0]]
-        if len(y_true.shape) == 1: # scalar
+        if len(y_true.shape) == 1:                                      # scalar / categorical values
             correct_confidences = y_pred_clipped[range(samples), y_true]
-        elif len(y_true.shape) == 2: # one-hot-encoded
+        elif len(y_true.shape) == 2:                                    # one-hot-encoded
             correct_confidences = np.sum(y_pred_clipped * y_true, axis=1)
 
         negative_log_likelihoods = -np.log(correct_confidences)
@@ -69,8 +70,8 @@ layer_Two = Layer_Dense(3, 3)
 activation_Two = Activation_Softmax()
 
 # pass data through layer
-layer_One.forward(X) # original input is X
-activation_One.forward(layer_One.output) # pass output of layer one into activation function
+layer_One.forward(X)                                                    # original input is X
+activation_One.forward(layer_One.output)                                # pass output of layer one into activation function
 layer_Two.forward(activation_One.output)
 activation_Two.forward(layer_Two.output)
 
@@ -84,7 +85,7 @@ print(f'Loss: {loss}')
 
 # calculate accuracy from output of layer two activation
 predictions = np.argmax(activation_Two.output, axis=1)
-if len(y.shape) == 2: # convert targets if one-hot encoded
+if len(y.shape) == 2:                                                   # convert targets if one-hot encoded
     y = np.argmax(y, axis=1)
 accuracy = np.mean(predictions == y)
 
