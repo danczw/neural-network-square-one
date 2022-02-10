@@ -87,18 +87,18 @@ outputs_batch = np.array([[1., 2., -3., -4.],
 # biases - one bias for each of the 3 neurons, row vector with shape of (1, neurons)
 biases = np.array([[2., 3., 0.5]])
 
-# gradient with respect to input
+# input gradient with respect to weights
 # sum weights related to the input (same index in each w array belongs to same input value over all neurons)
 # multiplied by passed-in gradient related to the neuron (corresponding neuron gradient for each input)
 dinputs_batch = np.dot(dvalues_batch, w.T)
 print(dinputs_batch, ' (gradient of the neuron function with respect to batch inputs)')
 
-# gradient with respect to weights
-# inputs multiplied by passed-in gradient related to the neuron (corresponding neuron gradient for each input)
+# weights gradient with respect to inputs
+# inputs multiplied by passed-in gradient related to the neuron (corresponding neuron gradient for each weight)
 dweights_batch = np.dot(inputs_batch.T, dvalues_batch)
 print(dweights_batch, ' (gradient of the neuron function with respect to batch weights)')
 
-# gradient with respect to bias
+# bias gradient with respect to passed-in gradient from previous layer
 # biases related to the inputs multiplied by passed-in gradient
 # related to the neuron (corresponding neuron gradient for each input)
 dbiases = np.sum(dvalues_batch, axis=0, keepdims=True) # keepdims keeps the gradient as row vector
@@ -109,7 +109,7 @@ Activation function derivative
 '''
 # gradient of subsequent function, for demonstration purposes
 dvalues_batch = np.array([[1., 2., 3., 4.],
-                          [5., 6., 7., 8.]
+                          [5., 6., 7., 8.],
                           [9., 10., 11., 12.]])
 
 # activation function (ReLU) gradient with respect to layer output
