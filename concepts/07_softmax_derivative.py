@@ -16,21 +16,22 @@ np.eye():
 
 import numpy as np
 
-softmax_output = [0.7, 0.1, 0.2]                                        # sample softmax_output
-softmax_output = np.array(softmax_output).reshape(-1, 1)                # reshape to vector
+# Sample softmax_output
+softmax_output = [0.7, 0.1, 0.2]
+
+# Reshape to vector
+softmax_output = np.array(softmax_output).reshape(-1, 1)
+
 print(softmax_output.shape)
 
 # Kronecker delta of softmax_output
 print(np.eye(softmax_output.shape[0]), ' (Kronecker delta)')
-# derivative of softmax demands multiplication of output with Kronecker delta
+
+# Derivative of softmax demands multiplication of output with Kronecker delta
 print(softmax_output * np.eye(softmax_output.shape[0]), ' (multiplication as per derivative complex)')
 
-# previous multiplication can be simplified
+# Previous multiplication can be simplified
 print(np.diagflat(softmax_output), ' (multiplication as per derivative simplified)')
-
-# perform subtraction of both arrays resulting in a Jacobian matrix
-print(np.diagflat(softmax_output) - np.dot(softmax_output, softmax_output.T), \
-    ' (Jacobian matrix with array of partial derivatives of softmax)')
 
 '''
 Jacobian matrix:
@@ -46,3 +47,6 @@ Jacobian matrix:
     the partial derivatives has then to be summed up for the final
     partial derivative with respect to this input
 '''
+# Perform subtraction of both arrays resulting in a Jacobian matrix
+print(np.diagflat(softmax_output) - np.dot(softmax_output, softmax_output.T), \
+    ' (Jacobian matrix with array of partial derivatives of softmax)')
