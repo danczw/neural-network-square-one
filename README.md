@@ -43,7 +43,8 @@ Each step builds on previous step and adds a new concept:
     * added loss function
 09. [Random optimization of a NN](nnfs_steps\09_nnfs_random-optimization.py)
     * added random weights and bias optimization
-10. ~~Backpropagation of a NN~~ << coming soon >>
+10. [Backpropagation of a NN](nnfs_steps\10_nnfs_backpropagation)
+    * added backpropagation through layers
 
 ---
 
