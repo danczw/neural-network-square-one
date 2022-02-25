@@ -43,8 +43,10 @@ Each step builds on previous step and adds a new concept:
     * added loss function
 09. [Random optimization of a NN](nnfs_steps\09_nnfs_random-optimization.py)
     * added random weights and bias optimization
-10. [Backpropagation of a NN](nnfs_steps\10_nnfs_backpropagation)
+10. [Backpropagation of a NN](nnfs_steps\10_nnfs_backpropagation.py)
     * added backpropagation through layers
+11. [Optimization of a NN](nnfs_steps\11_nnfs_optimizer.py)
+    * added SGD as parameter (weights and biases) optimizer
 
 ---
 
@@ -58,6 +60,8 @@ The purpose of the concepts is to better understand changes in the different ste
 * [Backpropagation Single Layer](concepts\05_backpropagation_single-layer.py)
 * [Backpropagation Single Layer w optimization](concepts\06_backpropagation_single-layer_optimization.py)
 * [Softmax Derivative and Jacobian matrix](concepts\07_softmax_derivative.py)
+* [Stochastic Gradient Descent Optimizer](concepts\08_stochastic_gradient_descent.py)
+* ~~[Optimizer Learning Rate](concepts\09_learning_rate.py)~~ >> comming soon <<
 
 ---
 

@@ -10,7 +10,7 @@ from timeit import timeit
 import nnfs
 nnfs.init()
 # TODO: choose between 'vertical' and 'spiral' dataset
-dataset = 'vertical'
+dataset = 'spiral'
 
 if dataset == 'vertical':
     # Import vertical dataset
@@ -169,15 +169,6 @@ class Loss_CategoricalCrossentropy(Loss):
         '''
         self.dinputs = self.dinputs / samples
 
-'''
-Common Categorical Cross-Entropy loss and Softmax activation
-    - previously, Categorical Cross-Entropy loss function partial derivative and
-        Softmax activation function partial derivative where implemented separately
-    - for simpler and faster execution, a wholistic implementation can be used based
-        again on the chain rule
-    - called common Categorical Cross-entropy loss and Softmax activation derivative
-    - see README.md for mathematical concept
-'''
 # Softmax classifier - combined Softmax activation and cross-entropy loss function
 class Activation_Softmax_Loss_CategoricalCrossEntropy():
     # Create activation and loss function objects
@@ -214,104 +205,67 @@ class Activation_Softmax_Loss_CategoricalCrossEntropy():
         # Normalize gradients
         self.dinputs = self.dinputs / samples
 
-'''
-Test if combined backward step returns same values
-    compared to seperate backpropagetion
-'''
- # 3 probabilities for each class for 3 samples
-softmax_outputs = np.array([[0.7, 0.1, 0.2],
-                           [0.1, 0.5, 0.4],
-                           [0.02, 0.9, 0.08]])
-# True classes
-class_targets = np.array([0, 1, 1])
+# SGD optimizer
+class Optimizer_SGD:
+    def __init__(self, learning_rate=1.0):
+        self.learning_rate = learning_rate
 
-# Separate backward step
-def backward_separate():
-    # Initialize softmax function
-    activation = Activation_Softmax()
-
-    # Set softmax outputs
-    activation.output = softmax_outputs
-
-    # Initialize loss function
-    loss = Loss_CategoricalCrossentropy()
-
-    # Backpropagete outputs based on true class through loss function
-    loss.backward(softmax_outputs, class_targets)
-
-    # Backpropagate loss gradients through activation function
-    activation.backward(loss.dinputs)
-
-    return activation.dinputs
-
-# Combined backward step
-def backward_combined():
-    # Initialize combined function 
-    softmax_loss = Activation_Softmax_Loss_CategoricalCrossEntropy()
-
-    # Backpropagete outputs based on true class
-    softmax_loss.backward(softmax_outputs, class_targets)
-
-    return softmax_loss.dinputs
-
-# Get results and time execution
-t_combined = timeit(lambda: backward_combined(), number = 10000)
-t_separate = timeit(lambda: backward_separate(), number = 10000)
-
-print(f'Gradients: separate loss and activation (runtime: {round(t_separate, 4)}):\n', backward_separate())
-print(f'Gradients: combined loss and activation (runtime: {round(t_combined, 4)}):\n', backward_combined())
-print(f'Separate gradient calculation was about {round(t_separate/t_combined, 2)} slower than combined calculation\n')
+    # Update parameters
+    def update_params(self, layer):
+        layer.weights -= self.learning_rate * layer.dweights
+        layer.biases -= self.learning_rate * layer.dbiases
 
 '''
 Initialize layers and activation function using
     common Categorical Cross-Entropy loss and Softmax activation
 '''
-layer_One = Layer_Dense(2, 3)
+layer_One = Layer_Dense(2, 64)
 activation_One = Activation_ReLU()
-layer_Two = Layer_Dense(3, 3)
+layer_Two = Layer_Dense(64, 3)
 loss_activation = Activation_Softmax_Loss_CategoricalCrossEntropy()
+optimizer = Optimizer_SGD()
 
-# Pass data through layers, original input is X
-layer_One.forward(X)
+# set epochs, i.e. loops on how often to optimize the parameter
+epochs = 1001
 
-# Pass output of layer one into activation function
-activation_One.forward(layer_One.output)
+for epoch in range(epochs):
+    # Pass data through layers, original input is X
+    layer_One.forward(X)
 
-# Pass output of activation one into layer two
-layer_Two.forward(activation_One.output)
+    # Pass output of layer one into activation function
+    activation_One.forward(layer_One.output)
 
-# Pass output of layer two into combined loss activation function
-loss = loss_activation.forward(layer_Two.output, y)
+    # Pass output of activation one into layer two
+    layer_Two.forward(activation_One.output)
 
-# Output of first few samples
-print(loss_activation.output[:5], ' (propapilities of first 5 samples)')
-print('loss: ', loss)
+    # Pass output of layer two into combined loss activation function
+    loss = loss_activation.forward(layer_Two.output, y)
 
-# Get predictions by finding index of highest class confidence
-predictions = np.argmax(loss_activation.output, axis=1)
+    # Get predictions by finding index of highest class confidence
+    predictions = np.argmax(loss_activation.output, axis=1)
 
-# Convert targets if one-hot encoded
-if len(y.shape) == 2:
-    y = np.argmax(y, axis=1)
+    # Convert targets if one-hot encoded
+    if len(y.shape) == 2:
+        y = np.argmax(y, axis=1)
 
-# Calculate accuracy
-accuracy = np.mean(predictions==y)
+    # Calculate accuracy
+    accuracy = np.mean(predictions==y)
 
-print('accuracy: ', accuracy, '\n')
+    if not epoch % 10:
+        print(f'epoch: {epoch}, loss: {loss}, accuracy: {accuracy}')
 
-# Backpropagete outputs based on true class through loss and softmax function
-loss_activation.backward(loss_activation.output, y)
+    # Backpropagete outputs based on true class through loss and softmax function
+    loss_activation.backward(loss_activation.output, y)
 
-# Backpropagate softmax function derivatives through layer two
-layer_Two.backward(loss_activation.dinputs)
+    # Backpropagate softmax function derivatives through layer two
+    layer_Two.backward(loss_activation.dinputs)
 
-# Backpropagate layer two derivatives through activation one (relu)
-activation_One.backward(layer_Two.dinputs)
+    # Backpropagate layer two derivatives through activation one (relu)
+    activation_One.backward(layer_Two.dinputs)
 
-# Backpropagate activation one (relu) derivatives through layer one
-layer_One.backward(activation_One.dinputs)
+    # Backpropagate activation one (relu) derivatives through layer one
+    layer_One.backward(activation_One.dinputs)
 
-print(layer_One.dweights, ' (gradients of layer one weights)')
-print(layer_One.dbiases, ' (gradients of layer one biases)')
-print(layer_Two.dweights, ' (gradients of layer two weights)')
-print(layer_One.dbiases, ' (gradients of layer two biases)')
+    # Use SGD optimizer to update parameters
+    optimizer.update_params(layer_One)
+    optimizer.update_params(layer_Two)
