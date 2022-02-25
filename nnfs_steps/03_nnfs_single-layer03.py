@@ -4,8 +4,10 @@ Simple single layer calculation of a Neural Network without activation function
 '''
 import numpy as np
 
-# 4 input values
-inputs = [1.0, 2.0, 3.0, 2.5]
+# Changed to batch input of [3,4], 3 batches of 4 inputs
+inputs = [[1.0, 2.0, 3.0, 2.5],
+          [2.0, 5.0, -1.0, 2.0],
+          [-1.5, 2.7, 3.3, -0.8]]
 
 # Biasis for three neurons
 biases = [2.0, 3.0, 0.5]
@@ -33,7 +35,7 @@ Note: size at index 1 of first argument array needs to match size at index 0
 output = np.dot(inputs, np.array(weights).T) + biases
 
 '''
-Output [3,3] corresponds to one ouput value per neuron (3 neurons)
+Output [3,3] corresponds to one output value per neuron (3 neurons)
     per batch (3 batches)
 '''
 print(output)

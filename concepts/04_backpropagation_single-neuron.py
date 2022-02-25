@@ -70,7 +70,8 @@ drelu_dno = dvalue * (1.0 if no > 0 else 0.0)
 print(drelu_dno, '                   (drelu_dno)')
 
 '''
-Partial derivative of ReLU with respect to weighted inputs (2nd step in forward pass) 
+Partial derivative of ReLU with respect to weighted inputs
+    (2nd step in forward pass) 
 
 Note: derivative of sum operation is always 1 in this case
 '''

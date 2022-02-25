@@ -100,16 +100,17 @@ class Activation_Softmax:
         self.dinputs = np.empty_like(dvalues)
 
         '''
-        Enumerate outputs and gradients - see concepts/07_softmax_derivative
-            => see concepts/07_softmax_derivative.py for code concept
-                and README.md for mathematical concept
+        Enumerate outputs and gradients => see concepts/07_softmax_derivative.py
+            for code concept and README.md for mathematical concept
         '''
-        for index, (single_output, single_dvalue) in enumerate(zip(self.output, dvalues)):
+        for index, (single_output, single_dvalue) in enumerate(zip(self.output,
+                                                                   dvalues)):
             # Flatten output array
             single_output = single_output.reshape(-1, 1)
 
             # Calculate Jacobin matrix of the output
-            jacobin_matrix = np.diagflat(single_output) - np.dot(single_output, single_output.T)
+            jacobin_matrix = np.diagflat(single_output) - np.dot(single_output,
+                                                                 single_output.T)
             
             # Calculate sample-wise gradient
             self.dinputs[index] = np.dot(jacobin_matrix, single_dvalue)

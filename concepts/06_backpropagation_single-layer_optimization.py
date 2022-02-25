@@ -54,5 +54,5 @@ dbiases = np.sum(drelu, axis=0, keepdims=True) # keepdims keeps the gradient as 
 weights += -0.001 * dweights
 biases += -0.001 * dbiases
 
-print(weights, ' (updated weights)')
+print(weights.T, ' (updated weights)')
 print(biases, ' (updated biases)')

@@ -1,6 +1,6 @@
 '''
 Neural Network backpropagation
-    - calculating the impact of variables (w & biases) on model's loss
+    - calculating the impact of variables (weights & biases) on model's loss
     - demonstrated on a single layer with 3 neurons and input size of 4
     - reading up on derivates and chain rule recommended !
 '''

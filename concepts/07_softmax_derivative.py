@@ -1,11 +1,12 @@
 '''
 Softmax activation functions derivative
-- partial derivative of the Softmax function
-- more complicated than the derivative of the Categorical Cross-Entropy loss
-- README.md for mathematical concept, code implementation below
+    - partial derivative of the Softmax function
+    - more complicated than the derivative of the Categorical Cross-Entropy loss
+    - README.md for mathematical concept, code implementation below
 
 np.eye():
-- given a number, n, returns an nxn array filled with ones on the diagonal and zeros everywhere else
+    - given a number, n, returns an nxn array filled with ones on the diagonal
+        and zeros everywhere else (Kronecker delta)
     > print(np.eye(5))
     > array([[1., 0., 0., 0., 0.],
     >        [0., 1., 0., 0., 0.],
@@ -35,8 +36,8 @@ print(np.diagflat(softmax_output), ' (multiplication as per derivative simplifie
 
 '''
 Jacobian matrix:
-- in this case an array of partial derivatives in all of the combinations
-    of both input vectors
+- defined in this case an array of partial derivatives in all
+    of the combinations of both input vectors
 - calculating the partial derivatives of every output of the Softmax function
     with respect to each input separately, because each input influences each
     output due to the normalization process, which takes the sum of all the

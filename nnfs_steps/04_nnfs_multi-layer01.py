@@ -20,6 +20,7 @@ weights_One = [[0.2, 0.8, -0.5, 1.0],
 biases_Two = [-1.0, 2.0, -0.5]
 
 # Added a second layer with 3 neurons and respective sets of weights and biases
+#   => 3 Neurons in previous layer result in 3 inputs for current layer
 weights_Two = [[0.1, -0.14, 0.5],
                [0.5, 0.12, -0.33],
                [-0.44, 0.73, -0.13]]

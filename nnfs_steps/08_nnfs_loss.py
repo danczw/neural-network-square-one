@@ -110,7 +110,7 @@ print(activation_Two.output[:5])
 # Calculate loss
 loss = loss_function.calculate(activation_Two.output, y)
 
-print(f'Loss: {loss}')
+print(f'loss: {loss}')
 
 # Calculate accuracy from output of layer two activation
 predictions = np.argmax(activation_Two.output, axis=1)

@@ -35,7 +35,8 @@ Initialize layers using layer classes with arguments of
     shape of input (features) and number of neurons
 '''
 layer_One = Layer_Dense(4, 5)
-# Second layer input corresponds with previous number of neurons => therefore pervious output shape
+# Second layer input corresponds with previous number of neurons
+#   => therefore pervious output shape
 layer_Two = Layer_Dense(5, 2)
 
 # Pass data through layers, original input is X
