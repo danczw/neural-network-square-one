@@ -1,6 +1,6 @@
 '''
-Optimization of Neural Network weights and biases using random guessing
-    - added backpropagation
+Optimization of Neural Network weights and biases
+    - added Stochastic Gradient Descent optimizer
 '''
 import matplotlib.pyplot as plt
 import numpy as np
@@ -205,7 +205,7 @@ class Activation_Softmax_Loss_CategoricalCrossEntropy():
         # Normalize gradients
         self.dinputs = self.dinputs / samples
 
-# SGD optimizer
+# SGD optimizer, see concepts/08_stochastic_gradient_descent.py for more information
 class Optimizer_SGD:
     def __init__(self, learning_rate=1.0):
         self.learning_rate = learning_rate
@@ -226,7 +226,7 @@ loss_activation = Activation_Softmax_Loss_CategoricalCrossEntropy()
 optimizer = Optimizer_SGD()
 
 # set epochs, i.e. loops on how often to optimize the parameter
-epochs = 1001
+epochs = 10001
 
 for epoch in range(epochs):
     # Pass data through layers, original input is X
@@ -251,8 +251,8 @@ for epoch in range(epochs):
     # Calculate accuracy
     accuracy = np.mean(predictions==y)
 
-    if not epoch % 10:
-        print(f'epoch: {epoch}, loss: {loss}, accuracy: {accuracy}')
+    if not epoch % 100:
+        print(f'epoch: {epoch}, loss: {loss:.3f}, accuracy: {accuracy:.3f}')
 
     # Backpropagete outputs based on true class through loss and softmax function
     loss_activation.backward(loss_activation.output, y)
