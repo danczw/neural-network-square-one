@@ -1,6 +1,7 @@
 '''
 Optimization of Neural Network weights and biases
-    - added adaptive gradient for each parameter (weights and biases)
+    - added adaptive gradient optimization
+        for each parameter (weights and biases)
 '''
 import matplotlib.pyplot as plt
 import numpy as np

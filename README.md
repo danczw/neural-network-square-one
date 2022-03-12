@@ -46,13 +46,17 @@ Each step builds on previous step and adds a new concept:
     02. [Backpropagation of a NN](nnfs_steps\04_optimization\4-2_nnfs_backpropagation.py)
         * added backpropagation through layers
     03. [SGD optimization of a NN](nnfs_steps\04_optimization\4-3_nnfs_stochastic-gradient-descent.py)
-        * added SGD as parameter (weights and biases) optimizer
+        * added Stochastic Gradient Descent as parameter (weights and biases) optimizer
     04. [SGD optimization of a NN](nnfs_steps\04_optimization\4-4_nnfs_learning-rate-decay.py)
         * added learning rate decay to SGD optimizer
     05. [SGD optimization of a NN](nnfs_steps\04_optimization\4-5_nnfs_momentum.py)
         * added momentum to SGD optimizer
-    06. [Adaptive gradient optimization of a NN](nnfs_steps\04_optimization\4-6_nnfs_adaptive-gradient-descent.py)
-        * added AdaGrad as parameter (weights and biases) optimizer
+    06. [AdaGrad optimization of a NN](nnfs_steps\04_optimization\4-6_nnfs_adaptive-gradient-descent.py)
+        * added Adaptive gradient as parameter (weights and biases) optimizer
+    07. [RMSprop optimization of a NN](nnfs_steps\04_optimization\4-7_nnfs_root-mean-square-prop.py)
+        * added Root Mean Square Propagation as parameter (weights and biases) optimizer
+    08. [Adam optimization of a NN](nnfs_steps\04_optimization\4-8_nnfs_adaptive-momentum.py)
+        * added Adaptive Momentum as parameter (weights and biases) optimizer
 
 ---
 
