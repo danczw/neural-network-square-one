@@ -8,12 +8,13 @@ Learning Rate
         small to be effective and cause learning stagnation
     - this can be due to a local minimum, i.e. a local minimum of the loss function,
         which might not be the global minumum and thereby not best optimization
-    - Solution: introducing momentum (or inertia) to the optimization process
-        - size of momentum can speed up optimization to find global minimum
-        - but too much momentum can cause problems, e.g. "jumping out" of a
+    - Solution: introducing inertia to the optimization process
+        - size of inertia can speed up optimization to find global minimum
+        - but too much inertia can cause problems, e.g. "jumping out" of a
             otherwise good local minumum
         - a learning rate decay can be used to reduce the learning rate
             over time in order to prevent overshooting the global minimum
+            as well as start with effective learning rate
 
 Learning Rate Decay
     - start with a large learning rate and decrease it during training

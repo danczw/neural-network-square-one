@@ -1,10 +1,6 @@
 # Neural-Network-from-Scratch
 
-##### *based on ['Neural Network from Scratch'](https://nnfs.io)*
-
-<br>
-
-Building a Neural Network from scratch in Python with minimal library useage. 
+My take on building a Neural Network from scratch in Python with minimal library useage, based on ['Neural Network from Scratch'](https://nnfs.io).
 
 Follow step-by-step instructions of creating a Neural Network from scratch in */nnfs_steps*.
 Important concepts can be found in */concepts*.
