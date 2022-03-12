@@ -20,7 +20,7 @@ if dataset == 'vertical':
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
     plt.show()
 elif dataset == 'spiral':
-    # Import vertical dataset
+    # Import spiral dataset
     from nnfs.datasets import spiral_data
     X, y = spiral_data(samples=100, classes=3)
 
