@@ -25,30 +25,34 @@ Dependencies are listed in *environment.yml*
 
 Each step builds on previous step and adds a new concept:
 
-01. [Single layer calculation of a Neural Network (NN)](nnfs_steps\01_nnfs_single-layer01.py)
-    * first single layer
-02. [Single layer calculation of a NN](nnfs_steps\02_nnfs_single-layer02.py)
-    * added numpy
-03. [Single layer calculation of a NN](nnfs_steps\03_nnfs_single-layer03.py)
-    * added batch input
-04. [Multi layer calculation of a NN](nnfs_steps\04_nnfs_multi-layer01.py)
-    * added further layer
-05. [Multi layer calculation of a NN](nnfs_steps\05_nnfs_multi-layer02.py)
-    * added OOP
-06. [Multi layer calculation of a NN](nnfs_steps\06_nnfs_activation01.py)
-    * added activation function for first layer
-07. [Multi layer calculation of a NN](nnfs_steps\07_nnfs_activation02.py)
-    * added activation function for output layer (softmax)
-08. [Multi layer calculation of a NN](nnfs_steps\08_nnfs_loss.py)
-    * added loss function
-09. [Random optimization of a NN](nnfs_steps\09_nnfs_random-optimization.py)
-    * added random weights and bias optimization
-10. [Backpropagation of a NN](nnfs_steps\10_nnfs_backpropagation.py)
-    * added backpropagation through layers
-11. [Optimization of a NN](nnfs_steps\11_nnfs_optimizer01.py)
-    * added SGD as parameter (weights and biases) optimizer
-12. [Optimization of a NN](nnfs_steps\12_nnfs_optimizer02.py)
-    * added learning rate decay to optimizer
+01. Neurons and Layers
+    01. [Single layer calculation of a Neural Network (NN)](nnfs_steps\01_layer\1-1_nnfs_single-layer01.py)
+        * first single layer
+    02. [Single layer calculation of a NN](nnfs_steps\01_layer\1-2_nnfs_single-layer02.py)
+        * added numpy
+    03. [Single layer calculation of a NN](nnfs_steps\01_layer\1-3_nnfs_single-layer03.py)
+        * added batch input
+    04. [Multi layer calculation of a NN](nnfs_steps\01_layer\1-4_nnfs_multi-layer01.py)
+        * added further layer
+    05. [Multi layer calculation of a NN](nnfs_steps\01_layer\1-5_nnfs_multi-layer02.py)
+        * added OOP
+02. Activation Function
+    01. [Activation of a NN](nnfs_steps\02_activation\06_nnfs_activation01.py)
+        * added activation function for first layer (ReLU)
+    02. [Activation of a NN](nnfs_steps\02_activation\07_nnfs_activation02.py)
+        * added activation function for output layer (softmax)
+03. Loss Function
+    01. [Loss calculation of a NN](nnfs_steps\03_loss\08_nnfs_loss.py)
+        * added loss function
+04. Optimization
+    01. [Random optimization of a NN](nnfs_steps\04_optimization\4-1_nnfs_random-optimization.py)
+        * added random weights and bias optimization
+    02. [Backpropagation of a NN](nnfs_steps\04_optimization\4-2_nnfs_backpropagation.py)
+        * added backpropagation through layers
+    03. [Optimization of a NN](nnfs_steps\04_optimization\4-3_nnfs_optimizer01.py)
+        * added SGD as parameter (weights and biases) optimizer
+    04. [Optimization of a NN](nnfs_steps\04_optimization\4-4_nnfs_optimizer02.py)
+        * added learning rate decay to optimizer
 
 ---
 
