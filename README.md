@@ -1,6 +1,6 @@
 # Neural-Network-from-Scratch
 
-My take on building a Neural Network from scratch in Python with minimal library useage, based on ['Neural Network from Scratch'](https://nnfs.io).
+My take on building a Neural Network from scratch in Python with minimal library useage, based on ['Neural Network from Scratch'](https://nnfs.io). The Neural Network is demonstrates a classification task of artificially created data.
 
 Follow step-by-step instructions of creating a Neural Network from scratch in */nnfs_steps*.
 Important concepts can be found in */concepts*.
@@ -45,10 +45,14 @@ Each step builds on previous step and adds a new concept:
         * added random weights and bias optimization
     02. [Backpropagation of a NN](nnfs_steps\04_optimization\4-2_nnfs_backpropagation.py)
         * added backpropagation through layers
-    03. [Optimization of a NN](nnfs_steps\04_optimization\4-3_nnfs_optimizer01.py)
+    03. [SGD optimization of a NN](nnfs_steps\04_optimization\4-3_nnfs_stochastic-gradient-descent.py)
         * added SGD as parameter (weights and biases) optimizer
-    04. [Optimization of a NN](nnfs_steps\04_optimization\4-4_nnfs_optimizer02.py)
-        * added learning rate decay to optimizer
+    04. [SGD optimization of a NN](nnfs_steps\04_optimization\4-4_nnfs_learning-rate-decay.py)
+        * added learning rate decay to SGD optimizer
+    05. [SGD optimization of a NN](nnfs_steps\04_optimization\4-5_nnfs_momentum.py)
+        * added momentum to SGD optimizer
+    06. [Adaptive gradient optimization of a NN](nnfs_steps\04_optimization\4-6_nnfs_adaptive-gradient-descent.py)
+        * added AdaGrad as parameter (weights and biases) optimizer
 
 ---
 
