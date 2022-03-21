@@ -57,8 +57,9 @@ Each step builds on previous step and adds a new concept:
         * added Root Mean Square Propagation as parameter (weights and biases) optimizer
     08. [Adam optimization of a NN](nnfs_steps\04_optimization\4-8_nnfs_adaptive-momentum.py)
         * added Adaptive Momentum as parameter (weights and biases) optimizer
-
-p. 321
+05. Regularization
+    01. [L1 and L2 regularization of a NN](nnfs_steps\05_regularization\5-1_nnfs_regularization-l1-l2.yp)
+        * added L1 and L2 regularization of generalization error
 
 ---
 
@@ -117,7 +118,6 @@ The purpose of the concepts is to better understand changes in the different ste
 > 
 > z<sub>i,k</sub> — k-th Softmax’s input of i-th sample
 
-
 <br>
 
 **Common Categorical Cross-entropy loss and Softmax activation derivative**
@@ -143,6 +143,30 @@ The purpose of the concepts is to better understand changes in the different ste
 > z<sub>i,j</sub> — j-th Softmax’s input of i-th sample
 >
 > z<sub>i,k</sub> — k-th Softmax’s input of i-th sample
+
+<br>
+
+**L1 regularization derivative**
+
+<img src=".\assets\l1_regularization_derivative.PNG" alt="L1 regularization derivative" width="500"/>
+
+> λ — regularization strength hyperparameter
+>
+> m (alternatively n) — iterator over all weights in a model (alternatively iterator over all biases in a model)
+>
+> w (alternatively b) — layer weights (alternatively layer biases)
+
+<br>
+
+**L2 regularization derivative**
+
+<img src=".\assets\l2_regularization_derivative.PNG" alt="L2 regularization derivative" width="500"/>
+
+> λ — regularization strength hyperparameter
+>
+> m (alternatively n) — iterator over all weights in a model (alternatively iterator over all biases in a model)
+>
+> w (alternatively b) — layer weights (alternatively layer biases)
 
 ---
 
