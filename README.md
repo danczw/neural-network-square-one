@@ -58,6 +58,8 @@ Each step builds on previous step and adds a new concept:
     08. [Adam optimization of a NN](nnfs_steps\04_optimization\4-8_nnfs_adaptive-momentum.py)
         * added Adaptive Momentum as parameter (weights and biases) optimizer
 
+p. 321
+
 ---
 
 ## Concepts

@@ -30,10 +30,6 @@ elif dataset == 'spiral':
 # Define class to initialize layer
 class Layer_Dense:
     def __init__(self, n_inputs, n_neurons):
-        '''
-        Keep initital weights close to 0.1 to not create
-            infinitively large number by later propagation through layers
-        '''
         # Shape of weights array based on input shape and number of neurons
         self.weights = 0.1 * np.random.rand(n_inputs, n_neurons)
         
@@ -52,10 +48,6 @@ class Activation_ReLU:
 
 # Define class to initialize activation function: Softmax
 class Activation_Softmax:
-    '''
-    Use of Softmax to exponentiate and normalize values to get
-        interpretable output, i.e. probability between 0 and 1
-    '''
     def forward(self, inputs):
         # Get propabilities, minus np.max to prevent overflow problem
         exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
@@ -78,16 +70,11 @@ class Loss_CategoricalCrossentropy(Loss):
     # Calculate categorical cross entropy
     def forward(self, y_pred, y_true):
         samples = len(y_pred)
-        '''
-        Clip y_pred to prevent inf loss when calculating loss of y_pred = 0
-            => see concepts/02_loss.py for details
-        '''
+        
+        # Clip y_pred to prevent inf loss when calculating loss of y_pred = 0
         y_pred_clipped = np.clip(y_pred, 1e-7, 1-1e-7)
 
-        '''
-        Dynamicaly handel confidences for different target var formatting:
-            scalar values [1, 0] or one-hot-encoded values[[0, 1], [1, 0]]
-        '''
+        # Dynamicaly handel confidences for different target var formatting
         if len(y_true.shape) == 1: # scalar / categorical values
             correct_confidences = y_pred_clipped[range(samples), y_true]
         elif len(y_true.shape) == 2: # one-hot-encoded

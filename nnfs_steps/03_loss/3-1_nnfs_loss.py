@@ -16,10 +16,6 @@ X, y = spiral_data(samples=100, classes=3)
 # Define class to initialize layer
 class Layer_Dense:
     def __init__(self, n_inputs, n_neurons):
-        '''
-        Keep initital weights close to 0.1 to not create
-            infinitively large number by later propagation through layers
-        '''
         # Shape of weights array based on input shape and number of neurons
         self.weights = 0.1 * np.random.rand(n_inputs, n_neurons)
         
@@ -38,10 +34,6 @@ class Activation_ReLU:
 
 # Define class to initialize activation function: Softmax
 class Activation_Softmax:
-    '''
-    Use of Softmax to exponentiate and normalize values to get
-        interpretable output, i.e. probability between 0 and 1
-    '''
     def forward(self, inputs):
         # Get propabilities, minus np.max to prevent overflow problem
         exp_values = np.exp(inputs - np.max(inputs, axis=1, keepdims=True))
