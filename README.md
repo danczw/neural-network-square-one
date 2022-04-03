@@ -60,6 +60,9 @@ Each step builds on previous step and adds a new concept:
 05. Regularization
     01. [L1 and L2 regularization of a NN](nnfs_steps\05_regularization\5-1_nnfs_regularization-l1-l2.yp)
         * added L1 and L2 regularization of generalization error
+06. Dropout Layer
+    01. [Dropout layer of a NN](nnfs_steps\06_dropout\6-1_nnfs_dropout.py)
+        * added dropout layer
 
 ---
 
@@ -76,6 +79,7 @@ The purpose of the concepts is to better understand changes in the different ste
 * [Stochastic Gradient Descent Optimizer](concepts\08_stochastic_gradient_descent.py)
 * [Optimizer Learning Rate](concepts\09_learning_rate.py)
 * [Regularization](concepts\10_regularization.py)
+* [Dropout](concepts\11_dropout.py)
 
 ---
 
@@ -168,6 +172,18 @@ The purpose of the concepts is to better understand changes in the different ste
 > m (alternatively n) — iterator over all weights in a model (alternatively iterator over all biases in a model)
 >
 > w (alternatively b) — layer weights (alternatively layer biases)
+
+**Dropout derivative**
+
+<img src=".\assets\dropout_derivative.PNG" alt="Dropout derivative" width="500"/>
+
+> i — index of giben input (and layer output)
+>
+> q — dropout rate
+>
+> r — neuron's input
+>
+> z — neuron's output
 
 ---
 

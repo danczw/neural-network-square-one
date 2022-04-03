@@ -1,6 +1,6 @@
 '''
 Regularization of Neural Network generalization error
-    - added L1 and L2 regularization
+    - added dropout layer
 '''
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,7 +26,7 @@ elif dataset == 'spiral':
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
     plt.show()
 
-# Define class to initialize layer
+# Define class to initialize dense layer
 class Layer_Dense:
     def __init__(self, n_inputs, n_neurons,
                  weight_regularizer_l1=0.0, weight_regularizer_l2=0.0,
@@ -37,9 +37,7 @@ class Layer_Dense:
         # Shape of biases based on number of neurons, initial biases are set to 0
         self.biases = np.zeros((1, n_neurons))
 
-        '''
-        Add lambda values to initialization and set regularization strength
-        '''
+        # Lambda values set regularization strength
         self.weight_regularizer_l1 = weight_regularizer_l1
         self.weight_regularizer_l2 = weight_regularizer_l2
         self.bias_regularizer_l1 = bias_regularizer_l1
@@ -52,14 +50,6 @@ class Layer_Dense:
         # Output is dotproduct + biases calc
         self.output = np.dot(inputs, self.weights) + self.biases
 
-    '''
-    Update Dense layer backward pass to include regularization
-        - for details on partial L1 regularization derivative,
-            see concepts/10_regularization.py
-        - partial derivative of L2 regularization is simply 2 * regularizer
-
-    Note: for mathematical derivation see README.md
-    '''
     def backward(self, dvalues):
         # Gradient of weights with respect to inputs
         self.dweights = np.dot(self.inputs.T, dvalues)
@@ -89,6 +79,32 @@ class Layer_Dense:
 
         # Graident of inputs with respect to weights
         self.dinputs = np.dot(dvalues, self.weights.T)
+
+'''
+Implementation of the new layer type: dropout layer
+'''
+# Define class to initialize droput layer
+class Layer_Dropout:
+    # Initialize
+    def __init__(self, rate):
+        # Rate is the dropout rate, inverted as for example for drouput rate
+        # of 0.1, we need success rate of 0.9
+        self.rate = 1 - rate
+
+    def forward(self, inputs):
+        # Save inputs
+        self.inputs = inputs
+
+        # Generate and save scaled mask
+        self.binary_mask = np.random.binomial(1, self.rate,
+                           size=inputs.shape) / self.rate
+        
+        # Apply mask to inputs
+        self.output = inputs * self.binary_mask
+
+    def backward(self, dvalues):
+        # Gradient on values
+        self.dinputs = dvalues * self.binary_mask
 
 # Define class to initialize activation function: rectified linear unit
 class Activation_ReLU:
@@ -141,13 +157,6 @@ class Loss:
         data_loss = np.mean(sample_losses)
         return data_loss
 
-    '''
-    Update general loss class to include additional penalty
-        - generalization is common for hidden layers
-        - regularization calculation is same regardless of type of loss used
-        => adding method to general loss class which is inherited by all
-            specific loss classes
-    '''
     def regularization_loss(self, layer):
         # set 0 as default
         regularization_loss = 0
@@ -460,39 +469,42 @@ Initialize layers and activation function using
     common Categorical Cross-Entropy loss and Softmax activation
 '''
 # Add weight and bias regularization parameter to hidden layer, update layer neurons
-layer_One = Layer_Dense(2, 64, weight_regularizer_l2=5e-4,
-                               bias_regularizer_l2=5e-4)
+dense_One = Layer_Dense(2, 512, weight_regularizer_l2=5e-4,
+                                bias_regularizer_l2=5e-4)
 activation_One = Activation_ReLU()
 
-# TODO: Change number of neurons in both layers to 512 check for performance increase
-layer_Two = Layer_Dense(64, 3)
+# Create dropout layer
+dropout_One = Layer_Dropout(0.1)
+
+# Changed layer size to 512
+dense_Two = Layer_Dense(512, 3)
 loss_activation = Activation_Softmax_Loss_CategoricalCrossEntropy()
 
 # TODO: try different hyperparameter for Adam optimization
-optimizer = Optimizer_Adam(learning_rate=0.02, decay=5e-7)
+optimizer = Optimizer_Adam(learning_rate=0.05, decay=5e-5)
 
 # set epochs, i.e. loops on how often to optimize the parameter
 epochs = 10001
 
 for epoch in range(epochs):
     # Pass data through layers, original input is X
-    layer_One.forward(X)
+    dense_One.forward(X)
 
     # Pass output of layer one into activation function
-    activation_One.forward(layer_One.output)
+    activation_One.forward(dense_One.output)
+
+    # Perform forward pass through dropout layer
+    dropout_One.forward(activation_One.output)
 
     # Pass output of activation one into layer two
-    layer_Two.forward(activation_One.output)
+    dense_Two.forward(dropout_One.output)
 
-    '''
-    Calculate regularization loss and add it to calculated data loss
-    '''
     # Pass output of layer two into combined loss activation function
-    data_loss = loss_activation.forward(layer_Two.output, y)
+    data_loss = loss_activation.forward(dense_Two.output, y)
 
     # Calculate regularization loss
-    regularization_loss = loss_activation.loss.regularization_loss(layer_One) + \
-                          loss_activation.loss.regularization_loss(layer_Two)
+    regularization_loss = loss_activation.loss.regularization_loss(dense_One) + \
+                          loss_activation.loss.regularization_loss(dense_Two)
 
     # Calculate overall loss
     loss = data_loss + regularization_loss
@@ -519,20 +531,23 @@ for epoch in range(epochs):
     loss_activation.backward(loss_activation.output, y)
 
     # Backpropagate softmax function derivatives through layer two
-    layer_Two.backward(loss_activation.dinputs)
+    dense_Two.backward(loss_activation.dinputs)
 
-    # Backpropagate layer two derivatives through activation one (relu)
-    activation_One.backward(layer_Two.dinputs)
+    # Backpropagate layer two derivatives through dropout layer
+    dropout_One.backward(dense_Two.dinputs)
+
+    # Backpropagate dropout function derivatives through activation one
+    activation_One.backward(dropout_One.dinputs)
 
     # Backpropagate activation one (relu) derivatives through layer one
-    layer_One.backward(activation_One.dinputs)
+    dense_One.backward(activation_One.dinputs)
 
     # Update learning rate
     optimizer.pre_update_params()
 
     # Use SGD optimizer to update parameters
-    optimizer.update_params(layer_One)
-    optimizer.update_params(layer_Two)
+    optimizer.update_params(dense_One)
+    optimizer.update_params(dense_Two)
 
     # Update iteration counter
     optimizer.post_update_params()
@@ -545,16 +560,16 @@ Validate the model
 X_test, y_test = spiral_data(samples=100, classes=3)
 
 # Pass data through layers, original input is X_test
-layer_One.forward(X_test)
+dense_One.forward(X_test)
 
 # Pass output of layer one into activation function
-activation_One.forward(layer_One.output)
+activation_One.forward(dense_One.output)
 
 # Pass output of activation one into layer two
-layer_Two.forward(activation_One.output)
+dense_Two.forward(activation_One.output)
 
 # Pass output of layer two into combined loss activation function
-loss = loss_activation.forward(layer_Two.output, y_test)
+loss = loss_activation.forward(dense_Two.output, y_test)
 
 # Get predictions by finding index of highest class confidence
 predictions = np.argmax(loss_activation.output, axis=1)

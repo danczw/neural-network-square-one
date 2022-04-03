@@ -1,5 +1,5 @@
 '''
-L1 and L2 Regularization
+L1 and L2 Regularization in forward pass
     - methods to reduce generalization error
     - L1 and L2 regularization are used to calculate a penalty added to the loss
         value to penalize model for large weights and biases
