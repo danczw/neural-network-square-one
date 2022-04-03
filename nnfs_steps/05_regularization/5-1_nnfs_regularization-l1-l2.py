@@ -26,38 +26,6 @@ elif dataset == 'spiral':
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
     plt.show()
 
-'''
-L1 and L2 Regularization
-    - methods to reduce generalization error
-    - L1 and L2 regularization are used to calculate a penalty added to the loss
-        value to penalize model for large weights and biases
-    => large weights and biases might indicate that a neuron is attempting to
-        memorize a data element instead of generalization
-    - L1 regularization
-        - sum of all the absolute values for weights and biases
-        - linear penalty as regularization loss returned by this function is
-            directly proportional to parameter values
-        - penalizes small values more than L2, causing the model to start being
-            invariant to small inputs and variant only the bigger once
-        - rarely used alone and usually combined with L2 regularization if at all
-    - L2 regularization
-        - sum of squared weights and biases
-        - non-linear penatly as regularization loss returned by this function
-            penalizes larger weights and biases more than smaller ones
-        - L2 commonly used as it does not affect smaller parameter values
-            substantially and does not allow model to grow weights and biases
-            too large by heavily penalizing relatively big values
-    - value Lambda is used, where higher value means more significant penalty
-
-Code notation:
-    > l1w = lambda_l1w * sum(abs(weights))
-    > l1b = lambda_l1b * sum(abs(biases))
-    > l2w = lambda_l2w * sum(weights**2)
-    > l2b = lambda_l2b * sum(biases**2)
-    > loss = data_loss + l1w + l1b + l2w + l2b 
-
-'''
-
 # Define class to initialize layer
 class Layer_Dense:
     def __init__(self, n_inputs, n_neurons,
@@ -87,7 +55,7 @@ class Layer_Dense:
     '''
     Update Dense layer backward pass to include regularization
         - for details on partial L1 regularization derivative,
-            see concepts/10_regularization_backpropagation.py
+            see concepts/10_regularization.py
         - partial derivative of L2 regularization is simply 2 * regularizer
 
     Note: for mathematical derivation see README.md

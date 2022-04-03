@@ -75,6 +75,7 @@ The purpose of the concepts is to better understand changes in the different ste
 * [Softmax Derivative and Jacobian matrix](concepts\07_softmax_derivative.py)
 * [Stochastic Gradient Descent Optimizer](concepts\08_stochastic_gradient_descent.py)
 * [Optimizer Learning Rate](concepts\09_learning_rate.py)
+* [Regularization](concepts\10_regularization.py)
 
 ---
 
