@@ -158,7 +158,7 @@ The purpose of the concepts is to better understand changes in the different ste
 
 **L1 regularization derivative**
 
-<img src=".\assets\l1_regularization_derivative.PNG" alt="L1 regularization derivative" width="500"/>
+<img src=".\assets\l1_regularization_derivative.png" alt="L1 regularization derivative" width="500"/>
 
 > λ — regularization strength hyperparameter
 >
@@ -170,7 +170,7 @@ The purpose of the concepts is to better understand changes in the different ste
 
 **L2 regularization derivative**
 
-<img src=".\assets\l2_regularization_derivative.PNG" alt="L2 regularization derivative" width="500"/>
+<img src=".\assets\l2_regularization_derivative.png" alt="L2 regularization derivative" width="500"/>
 
 > λ — regularization strength hyperparameter
 >
