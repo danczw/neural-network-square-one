@@ -61,8 +61,11 @@ Each step builds on previous step and adds a new concept:
     01. [L1 and L2 regularization of a NN](nnfs_steps\05_regularization\5-1_nnfs_regularization-l1-l2.yp)
         * added L1 and L2 regularization of generalization error
 06. Dropout Layer
-    01. [Dropout layer of a NN](nnfs_steps\06_dropout\6-1_nnfs_dropout.py)
+    01. [Dropout layer of a NN](nnfs_steps\06_dropout\6-1_nnfs_dropout-layer.py)
         * added dropout layer
+07. Binary Logistic Regression
+    01. [Binary logistic regression of a NN](nnfs_steps\07_regression\7-1_nnfs_binary-log-regression.py)
+        * added binary logistic regression for binary classification
 
 ---
 
@@ -127,7 +130,7 @@ The purpose of the concepts is to better understand changes in the different ste
 
 **Common Categorical Cross-entropy loss and Softmax activation derivative**
 
-<img src=".\assets\cross_categorical_softmax_derivative.PNG" alt="Categorical Cross-Entropy loss derivative" width="500"/>
+<img src=".\assets\cross_categorical_softmax_derivative.PNG" alt="Categorical Cross-Entropy and Sofmax activation loss derivative" width="500"/>
 
 > i — i-th sample in a set
 >
@@ -177,13 +180,35 @@ The purpose of the concepts is to better understand changes in the different ste
 
 <img src=".\assets\dropout_derivative.PNG" alt="Dropout derivative" width="500"/>
 
-> i — index of giben input (and layer output)
+> i — index of given input (and layer output)
 >
 > q — dropout rate
 >
 > r — neuron's input
 >
 > z — neuron's output
+
+**Sigmoid derivative**
+
+<img src=".\assets\sigmoid_derivative.PNG" alt="Sigmoid derivative" width="500"/>
+
+> i — index of current sample
+>
+> j — current output in this sample
+>
+> z — singular output value of the layer that this activation function takes as input
+
+**Binary Cross-entropy loss derivative**
+
+<img src=".\assets\cross_binary_derivative.PNG" alt="Binary Cross-Entropy loss derivative" width="500"/>
+
+> i — i-th sample in a set
+>
+> j — label/output index
+>
+> y — target values
+>
+> y-hat — predicted values
 
 ---
 

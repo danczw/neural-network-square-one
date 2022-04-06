@@ -1,6 +1,8 @@
 '''
-Regularization of Neural Network generalization error
-    - added dropout layer
+Binary logistic regression with Neural Network
+    - added sigmoid activation function
+    - added binary cross-entropy
+    - update data ti represent binary outputs
 '''
 import matplotlib.pyplot as plt
 import numpy as np
@@ -14,14 +16,19 @@ dataset = 'spiral'
 if dataset == 'vertical':
     # Import vertical dataset
     from nnfs.datasets import vertical_data
-    X, y = vertical_data(samples=1000, classes=3)
+    X, y = vertical_data(samples=1000, classes=2)
+    # Reshape to represent binary outputs
+    y = y.reshape(-1, 1)
 
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
     plt.show()
+
 elif dataset == 'spiral':
     # Import spriral dataset
     from nnfs.datasets import spiral_data
-    X, y = spiral_data(samples=1000, classes=3)
+    X, y = spiral_data(samples=1000, classes=2)
+    # Reshape to represent binary outputs
+    y = y.reshape(-1, 1)
 
     plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
     plt.show()
@@ -80,9 +87,6 @@ class Layer_Dense:
         # Graident of inputs with respect to weights
         self.dinputs = np.dot(dvalues, self.weights.T)
 
-'''
-Implementation of the new layer type: dropout layer
-'''
 # Define class to initialize droput layer
 class Layer_Dropout:
     # Initialize
@@ -148,6 +152,36 @@ class Activation_Softmax:
             
             # Calculate sample-wise gradient
             self.dinputs[index] = np.dot(jacobin_matrix, single_dvalue)
+
+'''
+Binary logistic regression
+    - alternate output layer option, where each neuron separately represents
+        two classes: 0 for one of the classes, 1 for the other
+    - model with this type of output layer is called binary logistic regression:
+    - for example, model can have two binary output neurons with one of these
+        distinguishing between person/not-person and the other bistinguishing
+        between indoors/outdoors
+    => binary logistic regression is a regressor type algorithm
+
+Sigmoid Activation Function
+    - sigmoid activation function is used with regressors because it "squishes"
+        a range of outputs from negative infinity to positive infinity to be
+        between 0 and 1
+    - sigmoid function approaches both maximum and minimum values exponentially
+        fast
+    - for mathematical details on sigmoid derivative, see README.md 
+'''
+# Define class to initialize activation function: Sigmoid
+class Activation_Sigmoid:
+    def forward(self, inputs):
+        # Remember inputs for creating derivatives during backpropagation
+        self.inputs = inputs
+        # Calculate sigmoid of input values
+        self.output = 1 / (1 + np.exp(-inputs))
+
+    def backward(self, dvalues):
+        # Derviative - calculate from output of the sogmoid function
+        self.dinputs = dvalues * (1 - self.output) * self.output
 
 # Define class to initialize loss function
 class Loss:
@@ -254,6 +288,52 @@ class Activation_Softmax_Loss_CategoricalCrossEntropy():
 
         # Normalize gradients
         self.dinputs = self.dinputs / samples
+
+'''
+Binary Cross-Entropy Loss
+    - since model can contain multiple binary outputs, and each of them, unlike´
+        in the cross-entropy loss, outputs its own prediction, loss calculated
+        on a single output is going to be avector of losses containing one value
+        for each output
+    - rather than only calculating the negative log only on the target class
+        (as done in categorical cross-entropy), log-likelihoods of the correct
+        and incorrect classes are summed separately for each neuron
+    - because class values are either 0 or 1, incorrect class can be simplified
+        to be 1 - correct class
+    - then calculating negative log-likelihood of correct and incorrect class
+        and adding them together
+    - for mathematical details on derivative of binary cross-entropy loss,
+        see README.md
+'''
+# Define class to initialize binary cross entropy
+class Loss_BinaryCrossentropy(Loss):
+    def forward(self, y_pred, y_true):
+        # Clip y_pred to prevent inf loss when calculating loss of y_pred = 0
+        y_pred_clipped = np.clip(y_pred, 1e-7, 1-1e-7)
+
+        # Calculate sample-wise loss
+        sample_losses = -(y_true * np.log(y_pred_clipped) +
+                         (1 - y_true) * np.log(1 - y_pred_clipped))
+        sample_losses = np.mean(sample_losses, axis=-1)
+
+        return sample_losses
+    
+    def backward(self, dvalues, y_true):
+        # Number of samples
+        samples = len(dvalues)
+        # Number of outputs in every sample
+        outputs = len(dvalues[0])
+
+        # Clip y_pred to prevent inf loss when calculating derivative of d_values = 0
+        dvalues_clipped = np.clip(dvalues, 1e-7, 1-1e-7)
+
+        # Calculate gradient
+        self.dinputs = -(y_true / dvalues_clipped -
+                        (1 - y_true) / (1 - dvalues_clipped)) / outputs
+        
+        # Normalize gradient
+        self.dinputs = self.dinputs / samples
+
 
 class Optimizer_SGD:
     def __init__(self, learning_rate=1.0, decay=0.0, momentum=0.0):
@@ -466,7 +546,7 @@ class Optimizer_Adam:
 
 '''
 Initialize layers and activation function using
-    common Categorical Cross-Entropy loss and Softmax activation
+    binary Cross-Entropy loss and Sigmoid activation
 '''
 # Add weight and bias regularization parameter to hidden layer, update layer neurons
 dense_One = Layer_Dense(2, 512, weight_regularizer_l2=5e-4,
@@ -476,15 +556,20 @@ activation_One = Activation_ReLU()
 # Create dropout layer
 dropout_One = Layer_Dropout(0.1)
 
-# Changed layer size to 512
-dense_Two = Layer_Dense(512, 3)
-loss_activation = Activation_Softmax_Loss_CategoricalCrossEntropy()
+# Changed layer size to 64
+dense_Two = Layer_Dense(512, 1)
+
+# Add Sigmoid activation
+activation_Two = Activation_Sigmoid()
+
+# Create loss function
+loss_function = Loss_BinaryCrossentropy()
 
 # TODO: try different hyperparameter for Adam optimization
 optimizer = Optimizer_Adam(learning_rate=0.05, decay=5e-5)
 
 # set epochs, i.e. loops on how often to optimize the parameter
-epochs = 10001
+epochs = 3001
 
 for epoch in range(epochs):
     # Pass data through layers, original input is X
@@ -496,25 +581,24 @@ for epoch in range(epochs):
     # Perform forward pass through dropout layer
     dropout_One.forward(activation_One.output)
 
-    # Pass output of activation one into layer two
+    # Pass output of dropout into layer two
     dense_Two.forward(dropout_One.output)
 
+    # Pass output of layer two into activation function
+    activation_Two.forward(dense_Two.output)
+
     # Pass output of layer two into combined loss activation function
-    data_loss = loss_activation.forward(dense_Two.output, y)
+    data_loss = loss_function.calculate(activation_Two.output, y)
 
     # Calculate regularization loss
-    regularization_loss = loss_activation.loss.regularization_loss(dense_One) + \
-                          loss_activation.loss.regularization_loss(dense_Two)
+    regularization_loss = loss_function.regularization_loss(dense_One) + \
+                          loss_function.regularization_loss(dense_Two)
 
     # Calculate overall loss
     loss = data_loss + regularization_loss
 
-    # Get predictions by finding index of highest class confidence
-    predictions = np.argmax(loss_activation.output, axis=1)
-
-    # Convert targets if one-hot encoded
-    if len(y.shape) == 2:
-        y = np.argmax(y, axis=1)
+    # Get predictions by getting binary mask array
+    predictions = (activation_Two.output > 0.5) * 1
 
     # Calculate accuracy
     accuracy = np.mean(predictions==y)
@@ -527,11 +611,14 @@ for epoch in range(epochs):
                f'reg_loss: {regularization_loss:.3f}, '
                f'learning rate: {optimizer.current_learning_rate:.6f}'))
 
-    # Backpropagete outputs based on true class through loss and softmax function
-    loss_activation.backward(loss_activation.output, y)
+    # Backpropagete outputs based on true class through loss function
+    loss_function.backward(activation_Two.output, y)
+
+    # Backpropagate loss function derivatives through activation function
+    activation_Two.backward(loss_function.dinputs)
 
     # Backpropagate softmax function derivatives through layer two
-    dense_Two.backward(loss_activation.dinputs)
+    dense_Two.backward(activation_Two.dinputs)
 
     # Backpropagate layer two derivatives through dropout layer
     dropout_One.backward(dense_Two.dinputs)
@@ -559,6 +646,9 @@ Validate the model
 # Create test dataset
 X_test, y_test = spiral_data(samples=100, classes=3)
 
+# Reshape to represent binary outputs
+y_test = y_test.reshape(-1, 1)
+
 # Pass data through layers, original input is X_test
 dense_One.forward(X_test)
 
@@ -568,15 +658,14 @@ activation_One.forward(dense_One.output)
 # Pass output of activation one into layer two
 dense_Two.forward(activation_One.output)
 
+# Pass output of layer two into activation function
+activation_Two.forward(dense_Two.output)
+
 # Pass output of layer two into combined loss activation function
-loss = loss_activation.forward(dense_Two.output, y_test)
+loss = loss_function.calculate(activation_Two.output, y_test)
 
-# Get predictions by finding index of highest class confidence
-predictions = np.argmax(loss_activation.output, axis=1)
-
-# Convert targets if one-hot encoded
-if len(y_test.shape) == 2:
-    y_test = np.argmax(y_test, axis=1)
+# Get predictions by getting binary mask array
+predictions = (activation_Two.output > 0.5) * 1
 
 # Calculate accuracy
 accuracy = np.mean(predictions==y_test)
