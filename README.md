@@ -180,8 +180,7 @@ The purpose of the concepts is to better understand changes in the different ste
 
 **Dropout derivative**
 
-<img src=".\assets\dropout_derivative.PNG" alt="Dropout derivative" width="500"/>
-
+<img src=".\assets\dropout_derivative.png" alt="Dropout derivative" width="500"/>
 > i — index of given input (and layer output)
 >
 > q — dropout rate
