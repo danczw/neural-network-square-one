@@ -81,7 +81,7 @@ class Layer_Dense:
         if self.bias_regularizer_l1 > 0:
             dl1 = np.ones_like(self.biases)
             dl1[self.biases < 0] = -1
-            self.dbiases += self.bias_regularizer_l1 * self.biases
+            self.dbiases += self.bias_regularizer_l1 * dl1
 
         # L2 regularizer gradient for biases - only calculated when factor > 0
         if self.bias_regularizer_l2 > 0:

@@ -1,30 +1,18 @@
 '''
-Regularization of Neural Network generalization error
-    - added dropout layer
+Linear Regression
+    - add linear activation function
+    - add Mean Squared Error loss function
+    - add Mean Absolute Error loss function
 '''
-import matplotlib.pyplot as plt
 import numpy as np
 
 # Import basic dataset
 import nnfs
 nnfs.init()
-# TODO: choose between 'vertical' and 'spiral' dataset
-dataset = 'spiral'
 
-if dataset == 'vertical':
-    # Import vertical dataset
-    from nnfs.datasets import vertical_data
-    X, y = vertical_data(samples=1000, classes=3)
-
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
-    plt.show()
-elif dataset == 'spiral':
-    # Import spriral dataset
-    from nnfs.datasets import spiral_data
-    X, y = spiral_data(samples=1000, classes=3)
-
-    plt.scatter(X[:, 0], X[:, 1], c=y, s=40, cmap='brg')
-    plt.show()
+# Update data for regression use case
+from nnfs.datasets import sine_data
+X, y = sine_data()
 
 # Define class to initialize dense layer
 class Layer_Dense:
@@ -32,7 +20,7 @@ class Layer_Dense:
                  weight_regularizer_l1=0.0, weight_regularizer_l2=0.0,
                  bias_regularizer_l1=0.0, bias_regularizer_l2=0.0):
         # Shape of weights array based on input shape and number of neurons
-        self.weights = 0.1 * np.random.rand(n_inputs, n_neurons)
+        self.weights = 0.1 * np.random.randn(n_inputs, n_neurons)
         
         # Shape of biases based on number of neurons, initial biases are set to 0
         self.biases = np.zeros((1, n_neurons))
@@ -80,9 +68,6 @@ class Layer_Dense:
         # Graident of inputs with respect to weights
         self.dinputs = np.dot(dvalues, self.weights.T)
 
-'''
-Implementation of the new layer type: dropout layer
-'''
 # Define class to initialize droput layer
 class Layer_Dropout:
     # Initialize
@@ -148,6 +133,41 @@ class Activation_Softmax:
             
             # Calculate sample-wise gradient
             self.dinputs[index] = np.dot(jacobin_matrix, single_dvalue)
+
+# Define class to initialize activation function: Sigmoid
+class Activation_Sigmoid:
+    def forward(self, inputs):
+        # Remember inputs for creating derivatives during backpropagation
+        self.inputs = inputs
+        # Calculate sigmoid of input values
+        self.output = 1 / (1 + np.exp(-inputs))
+
+    def backward(self, dvalues):
+        # Derviative - calculate from output of the sogmoid function
+        self.dinputs = dvalues * (1 - self.output) * self.output
+
+'''
+Regression (linear)
+    - regression is used to determine a specific value for a given input
+    - therefore, outputs needs to be more granular
+    => new activation and loss measure are needed
+
+Linear Activation
+    - to predict a scalar value
+    - does not modify its input and passes it to the output: y=x
+    - for backward pass, derivative is 1
+'''
+# Define class to initialize linear activation function
+class Activation_Linear:
+    def forward(self, inputs):
+        # Remember inputs for creating derivatives during backpropagation
+        self.inputs = inputs
+        # Pass inputs to output
+        self.output = inputs
+
+    def backward(self, dvalues):
+        # Derivative is 1, 1 * dvalues = dvalues => chain rule
+        self.dinputs = dvalues.copy()
 
 # Define class to initialize loss function
 class Loss:
@@ -253,6 +273,90 @@ class Activation_Softmax_Loss_CategoricalCrossEntropy():
         self.dinputs[range(samples), y_true] -= 1
 
         # Normalize gradients
+        self.dinputs = self.dinputs / samples
+
+# Define class to initialize binary cross entropy
+class Loss_BinaryCrossentropy(Loss):
+    def forward(self, y_pred, y_true):
+        # Clip y_pred to prevent inf loss when calculating loss of y_pred = 0
+        y_pred_clipped = np.clip(y_pred, 1e-7, 1-1e-7)
+
+        # Calculate sample-wise loss
+        sample_losses = -(y_true * np.log(y_pred_clipped) +
+                         (1 - y_true) * np.log(1 - y_pred_clipped))
+        sample_losses = np.mean(sample_losses, axis=-1)
+
+        return sample_losses
+    
+    def backward(self, dvalues, y_true):
+        # Number of samples
+        samples = len(dvalues)
+        # Number of outputs in every sample
+        outputs = len(dvalues[0])
+
+        # Clip y_pred to prevent inf loss when calculating derivative of d_values = 0
+        dvalues_clipped = np.clip(dvalues, 1e-7, 1-1e-7)
+
+        # Calculate gradient
+        self.dinputs = -(y_true / dvalues_clipped -
+                        (1 - y_true) / (1 - dvalues_clipped)) / outputs
+        
+        # Normalize gradient
+        self.dinputs = self.dinputs / samples
+
+'''
+Mean Squared Error Loss (MSE)
+    - square the difference between the predicted and true values
+        of single outputs
+    - average those squared differences for all samples
+    - idea is to penalize more harshly the further away we get from
+        the intended target
+    - for backward pass, see more mathematical details in the README.md
+'''
+class Loss_MeanSquaredError(Loss):
+    def forward(self, y_pred, y_true):
+        # Calculate sample-wise loss
+        sample_losses = np.mean((y_true - y_pred)**2, axis=-1)
+        return sample_losses
+    
+    def backward(self, dvalues, y_true):
+        # Number of samples
+        samples = len(dvalues)
+        # Number of outputs in every sample
+        outputs = len(dvalues[0])
+
+        # Calculate gradient
+        self.dinputs = -2 * (y_true - dvalues) / outputs
+
+        # Normalize gradient
+        self.dinputs = self.dinputs / samples
+
+'''
+Mean Absolute Error Loss (MAE)
+    - take the absolute difference between predicted and true values in
+        a single output
+    - average those absolute values
+    - penalizes error linearly and produces sparser results
+    - is robust to outliers, which can be both advantageous and disadvantageous
+    - in reality, MAE is less frequently used than MSE
+    - for backward pass, see more mathematical details in the README.md
+'''
+class Loss_MeanAbsoluteError(Loss):
+    def forward(self, y_pred, y_true):
+        # Calculate sample-wise loss
+        sample_losses = np.mean(np.abs(y_true - y_pred), axis=-1)
+        return sample_losses
+    
+    def backward(self, dvalues, y_true):
+        # Number of samples
+        samples = len(dvalues)
+        # Number of outputs in every sample
+        outputs = len(dvalues[0])
+
+        # Calculate gradient
+        self.dinputs = np.sign(y_true - dvalues) / outputs
+
+        # Normalize gradient
         self.dinputs = self.dinputs / samples
 
 class Optimizer_SGD:
@@ -466,22 +570,44 @@ class Optimizer_Adam:
 
 '''
 Initialize layers and activation function using
-    common Categorical Cross-Entropy loss and Softmax activation
+    binary Cross-Entropy loss and Sigmoid activation
 '''
-# Add weight and bias regularization parameter to hidden layer, update layer neurons
-dense_One = Layer_Dense(2, 512, weight_regularizer_l2=5e-4,
-                                bias_regularizer_l2=5e-4)
+# Add weight and bias regularization parameter to hidden layer
+dense_One = Layer_Dense(1, 64)
 activation_One = Activation_ReLU()
 
-# Create dropout layer
-dropout_One = Layer_Dropout(0.1)
+# Changed layer size to 64
+dense_Two = Layer_Dense(64, 64)
+activation_Two = Activation_ReLU()
 
-# Changed layer size to 512
-dense_Two = Layer_Dense(512, 3)
-loss_activation = Activation_Softmax_Loss_CategoricalCrossEntropy()
+# Create third dense layer with 64 input features and 1 output feature
+dense_Three = Layer_Dense(64, 1)
+# Add linear activation
+activation_Three = Activation_Linear()
+
+# Create loss function
+loss_function = Loss_MeanSquaredError()
 
 # TODO: try different hyperparameter for Adam optimization
-optimizer = Optimizer_Adam(learning_rate=0.05, decay=5e-5)
+optimizer = Optimizer_Adam(learning_rate=0.005, decay=1e-3)
+
+'''
+Accuracy in Regression
+    - with cross-entropy, number of matches divided by number of samples could
+        be used to measure the model's accuracy
+    - with a regression model, output is similar to binary regression model with
+        each output neuron giving a separate output
+    - furthermore, prediction is a float value, so the output will most unlikely
+        never be exactly the true value
+    - there are no real accuracy factors for regression problems, but one can
+        be simulated
+    - simulation: use a threshold or limit to determine if prediction is
+        correct, sometimes called precision
+    - use precision value as a sort of cushion allowance for regression outputs
+        when comparing targets and  predictions 
+'''
+# Accuracy precision for accuracy calculation
+accuary_precision = np.std(y) / 250
 
 # set epochs, i.e. loops on how often to optimize the parameter
 epochs = 10001
@@ -493,31 +619,34 @@ for epoch in range(epochs):
     # Pass output of layer one into activation function
     activation_One.forward(dense_One.output)
 
-    # Perform forward pass through dropout layer
-    dropout_One.forward(activation_One.output)
+    # Pass output of activation one into layer two
+    dense_Two.forward(activation_One.output)
 
-    # Pass output of dropout into layer two
-    dense_Two.forward(dropout_One.output)
+    # Pass output of layer two into activation function
+    activation_Two.forward(dense_Two.output)
+
+    # Pass output of activation one into layer two
+    dense_Three.forward(activation_Two.output)
+
+    # Pass output of layer two into activation function
+    activation_Three.forward(dense_Three.output)
 
     # Pass output of layer two into combined loss activation function
-    data_loss = loss_activation.forward(dense_Two.output, y)
+    data_loss = loss_function.calculate(activation_Three.output, y)
 
     # Calculate regularization loss
-    regularization_loss = loss_activation.loss.regularization_loss(dense_One) + \
-                          loss_activation.loss.regularization_loss(dense_Two)
+    regularization_loss = loss_function.regularization_loss(dense_One) + \
+                          loss_function.regularization_loss(dense_Two) + \
+                          loss_function.regularization_loss(dense_Three)
 
     # Calculate overall loss
     loss = data_loss + regularization_loss
 
-    # Get predictions by finding index of highest class confidence
-    predictions = np.argmax(loss_activation.output, axis=1)
-
-    # Convert targets if one-hot encoded
-    if len(y.shape) == 2:
-        y = np.argmax(y, axis=1)
+    # Get predictions
+    predictions = activation_Three.output
 
     # Calculate accuracy
-    accuracy = np.mean(predictions==y)
+    accuracy = np.mean(np.absolute(predictions - y) < accuary_precision)
 
     if not epoch % 100:
         print((f'epoch: {epoch}, '
@@ -527,58 +656,18 @@ for epoch in range(epochs):
                f'reg_loss: {regularization_loss:.3f}, '
                f'learning rate: {optimizer.current_learning_rate:.6f}'))
 
-    # Backpropagete outputs based on true class through loss and softmax function
-    loss_activation.backward(loss_activation.output, y)
-
-    # Backpropagate softmax function derivatives through layer two
-    dense_Two.backward(loss_activation.dinputs)
-
-    # Backpropagate layer two derivatives through dropout layer
-    dropout_One.backward(dense_Two.dinputs)
-
-    # Backpropagate dropout function derivatives through activation one
-    activation_One.backward(dropout_One.dinputs)
-
-    # Backpropagate activation one (relu) derivatives through layer one
+    # Backpropagete outputs
+    loss_function.backward(activation_Three.output, y)
+    activation_Three.backward(loss_function.dinputs)
+    dense_Three.backward(activation_Three.dinputs)
+    activation_Two.backward(dense_Three.dinputs)
+    dense_Two.backward(activation_Two.dinputs)
+    activation_One.backward(dense_Two.dinputs)
     dense_One.backward(activation_One.dinputs)
 
-    # Update learning rate
+    # Update weights and biases
     optimizer.pre_update_params()
-
-    # Use SGD optimizer to update parameters
     optimizer.update_params(dense_One)
     optimizer.update_params(dense_Two)
-
-    # Update iteration counter
+    optimizer.update_params(dense_Three)
     optimizer.post_update_params()
-
-'''
-Validate the model
-    - add test data to evaluate model performance on unseen data
-'''
-# Create test dataset
-X_test, y_test = spiral_data(samples=100, classes=3)
-
-# Pass data through layers, original input is X_test
-dense_One.forward(X_test)
-
-# Pass output of layer one into activation function
-activation_One.forward(dense_One.output)
-
-# Pass output of activation one into layer two
-dense_Two.forward(activation_One.output)
-
-# Pass output of layer two into combined loss activation function
-loss = loss_activation.forward(dense_Two.output, y_test)
-
-# Get predictions by finding index of highest class confidence
-predictions = np.argmax(loss_activation.output, axis=1)
-
-# Convert targets if one-hot encoded
-if len(y_test.shape) == 2:
-    y_test = np.argmax(y_test, axis=1)
-
-# Calculate accuracy
-accuracy = np.mean(predictions==y_test)
-
-print(f'validation, acc: {accuracy:.3f}, loss: {loss:.3f}')

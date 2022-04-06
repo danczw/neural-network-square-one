@@ -66,6 +66,8 @@ Each step builds on previous step and adds a new concept:
 07. Binary Logistic Regression
     01. [Binary logistic regression of a NN](nnfs_steps\07_regression\7-1_nnfs_binary-log-regression.py)
         * added binary logistic regression for binary classification
+    02. [Linear logistic regression of a NN](nnfs_steps\07_regression\7-2_nnfs_linear-regression.py)
+        * added linear regression scalar prediction
 
 ---
 
@@ -192,15 +194,39 @@ The purpose of the concepts is to better understand changes in the different ste
 
 <img src=".\assets\sigmoid_derivative.PNG" alt="Sigmoid derivative" width="500"/>
 
-> i — index of current sample
+> i — i-th sample in a set
 >
-> j — current output in this sample
+> j — label/output index
 >
 > z — singular output value of the layer that this activation function takes as input
 
 **Binary Cross-entropy loss derivative**
 
-<img src=".\assets\cross_binary_derivative.PNG" alt="Binary Cross-Entropy loss derivative" width="500"/>
+<img src=".\assets\cross_binary_derivative.PNG" alt="Binary cross-entropy loss derivative" width="500"/>
+
+> i — i-th sample in a set
+>
+> j — label/output index
+>
+> y — target values
+>
+> y-hat — predicted values
+
+**Mean squared error loss derivative**
+
+<img src=".\assets\mean_squared_error_derivative.PNG" alt="Mean squared error loss derivative" width="500"/>
+
+> i — i-th sample in a set
+>
+> j — label/output index
+>
+> y — target values
+>
+> y-hat — predicted values
+
+**Mean absolute error loss derivative**
+
+<img src=".\assets\mean_absolute_error_derivative.PNG" alt="Mean absolute error loss derivative" width="500"/>
 
 > i — i-th sample in a set
 >
