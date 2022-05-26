@@ -58,7 +58,7 @@ Each step builds on previous step and adds a new concept:
     08. [Adam optimization of a NN](nnfs_steps/04_optimization/4-8_nnfs_adaptive-momentum.py)
         * added Adaptive Momentum as parameter (weights and biases) optimizer
 05. Regularization
-    01. [L1 and L2 regularization of a NN](nnfs_steps/05_regularization/5-1_nnfs_regularization-l1-l2.yp)
+    01. [L1 and L2 regularization of a NN](nnfs_steps/05_regularization/5-1_nnfs_regularization-l1-l2.py)
         * added L1 and L2 regularization of generalization error
 06. Dropout Layer
     01. [Dropout layer of a NN](nnfs_steps/06_dropout/6-1_nnfs_dropout-layer.py)
