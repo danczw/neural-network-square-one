@@ -1,8 +1,8 @@
-# Neural-Network-from-Scratch
+# neural network from square one
 
-My take on building a Neural Network from scratch in Python with minimal library usage, based on ['Neural Network from Scratch'](https://nnfs.io). The Neural Network demonstrates a classification task of artificially created data.
+My take on building a Neural Network from the ground up in Python with minimal library usage, based on ['Neural Network from Scratch'](https://nnfs.io). The Neural Network demonstrates a classification task of artificially created data.
 
-Follow step-by-step instructions of creating a Neural Network from scratch in */nnfs_steps*.
+Follow step-by-step instructions of creating a Neural Network from square one in */nnfs_steps*.
 Important concepts can be found in */concepts*.
 
 ---
@@ -17,7 +17,7 @@ Dependencies are listed in *environment.yml*
 
 ---
 
-## Neural Network from Scratch
+## Neural Network from Square One
 
 Each step builds on previous step and adds a new concept:
 
