@@ -1,3 +1,6 @@
+import math
+import numpy as np
+
 '''
 Calculating Neural Network Loss with Categorical Cross-Entropy
     - calculation of loss using single observation with 3 possible classes
@@ -5,8 +8,6 @@ Calculating Neural Network Loss with Categorical Cross-Entropy
     - with higher confidence in prediction (softmax_output) loss is lower
         and vice versa 
 '''
-
-import math
 
 # Fictional target output: first class is correct
 target_output = [1, 0, 0]
@@ -25,8 +26,6 @@ print(loss)
 '''
 Concept for easier target variable selection when working with arrays
 '''
-
-import numpy as np
 
 class_target = [0, 1, 1]
 

@@ -1,13 +1,15 @@
-'''
-Optimization of Neural Network weights and biases
-    - added learning rate decay to Stochastic Gradient Descent optimizer
-'''
 import matplotlib.pyplot as plt
 import numpy as np
 
 # Import basic dataset
 import nnfs
 nnfs.init()
+
+'''
+Optimization of Neural Network weights and biases
+    - added learning rate decay to Stochastic Gradient Descent optimizer
+'''
+
 # TODO: choose between 'vertical' and 'spiral' dataset
 dataset = 'spiral'
 

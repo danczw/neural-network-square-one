@@ -1,3 +1,5 @@
+import numpy as np
+
 '''
 L1 and L2 Regularization in forward pass
     - methods to reduce generalization error
@@ -23,8 +25,6 @@ L1 and L2 Regularization in forward pass
             too large by heavily penalizing relatively big values
     - value Lambda is used, where higher value means more significant penalty
 '''
-
-import numpy as np
 
 # Weights and bias of one neuron
 weights = np.array([0.2, 0.8, -0.5])

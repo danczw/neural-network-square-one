@@ -1,3 +1,5 @@
+import numpy as np
+
 '''
 Softmax activation functions derivative
     - partial derivative of the Softmax function
@@ -14,8 +16,6 @@ np.eye():
     >        [0., 0., 0., 1., 0.],
     >        [0., 0., 0., 0., 1.]])
 '''
-
-import numpy as np
 
 # Sample softmax_output
 softmax_output = [0.7, 0.1, 0.2]

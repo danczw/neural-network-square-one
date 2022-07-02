@@ -1,8 +1,9 @@
+import numpy as np
+
 '''
 Simple single layer calculation of a Neural Network without activation function
     - faster version using numpy
 '''
-import numpy as np
 
 # 4 input values
 inputs = [1.0, 2.0, 3.0, 2.5]

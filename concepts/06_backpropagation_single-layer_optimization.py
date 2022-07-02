@@ -1,11 +1,11 @@
+import numpy as np
+
 '''
 Neural Network backpropagation with batch processing and optimization
     - calculating the impact of variables (w & biases) on model's loss
     - demonstrated on a single layer with 3 neurons and input size of 4
     - reading up on derivates recommended
 '''
-
-import numpy as np
 
 # Passed gradient from next layer, for demonstration purposes
 dvalues_batch = np.array([[1., 1., 1.],

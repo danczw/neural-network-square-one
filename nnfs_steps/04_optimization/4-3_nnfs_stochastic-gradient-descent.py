@@ -1,7 +1,3 @@
-'''
-Optimization of Neural Network weights and biases
-    - added Stochastic Gradient Descent optimizer
-'''
 import matplotlib.pyplot as plt
 import numpy as np
 from timeit import timeit
@@ -9,6 +5,11 @@ from timeit import timeit
 # Import basic dataset
 import nnfs
 nnfs.init()
+
+'''
+Optimization of Neural Network weights and biases
+    - added Stochastic Gradient Descent optimizer
+'''
 # TODO: choose between 'vertical' and 'spiral' dataset
 dataset = 'spiral'
 

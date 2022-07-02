@@ -1,7 +1,8 @@
+import numpy as np
+
 '''
 Multi layer calculation of a Neural Network with batch input
 '''
-import numpy as np
 
 # Changed to batch input of [3,4]
 inputs = [[1.0, 2.0, 3.0, 2.5],

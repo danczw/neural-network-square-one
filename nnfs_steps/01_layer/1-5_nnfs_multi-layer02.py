@@ -1,8 +1,9 @@
+import numpy as np
+
 '''
 Multi layer calculation of a Neural Network with batch input
     - added OOP
 '''
-import numpy as np
 
 # Changed input naming to X to conform with notation standards
 X = [[1.0, 2.0, 3.0, 2.5],

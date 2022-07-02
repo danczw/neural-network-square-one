@@ -1,14 +1,16 @@
-'''
-Optimization of Neural Network weights and biases using random guessing
-    - semi random guessing weights and biases can lead to better performance
-    - >>> slow and only for very basic datasets, i.e. vertical data testset <<<
-'''
 import matplotlib.pyplot as plt
 import numpy as np
 
 # Import basic dataset
 import nnfs
 nnfs.init()
+
+'''
+Optimization of Neural Network weights and biases using random guessing
+    - semi random guessing weights and biases can lead to better performance
+    - >>> slow and only for very basic datasets, i.e. vertical data testset <<<
+'''
+
 # TODO: choose between 'vertical' and 'spiral' dataset
 dataset = 'vertical'
 

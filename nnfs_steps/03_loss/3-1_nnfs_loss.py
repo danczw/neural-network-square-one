@@ -1,14 +1,15 @@
-'''
-Multi layer calculation of a Neural Network with batch input
-    - added loss function
-    - added accuracy
-'''
 import numpy as np
 
 # Import basic dataset
 import nnfs
 from nnfs.datasets import spiral_data
 nnfs.init()
+
+'''
+Multi layer calculation of a Neural Network with batch input
+    - added loss function
+    - added accuracy
+'''
 
 # Define input
 X, y = spiral_data(samples=100, classes=3)

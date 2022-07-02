@@ -1,11 +1,11 @@
+import numpy as np
+
 '''
 Neural Network backpropagation
     - calculating the impact of variables (weights & biases) on model's loss
     - demonstrated on a single layer with 3 neurons and input size of 4
     - reading up on derivates and chain rule recommended !
 '''
-
-import numpy as np
 
 # Passed gradient (derivates) from next layer, for demonstration purposes
 dvalues = np.array([[1.0, 1.0, 1.0]])

@@ -1,13 +1,15 @@
-'''
-Regularization of Neural Network generalization error
-    - added dropout layer
-'''
 import matplotlib.pyplot as plt
 import numpy as np
 
 # Import basic dataset
 import nnfs
 nnfs.init()
+
+'''
+Regularization of Neural Network generalization error
+    - added dropout layer
+'''
+
 # TODO: choose between 'vertical' and 'spiral' dataset
 dataset = 'spiral'
 

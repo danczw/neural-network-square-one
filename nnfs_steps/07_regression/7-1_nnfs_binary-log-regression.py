@@ -1,15 +1,17 @@
-'''
-Binary logistic regression with Neural Network
-    - added sigmoid activation function
-    - added binary cross-entropy
-    - update data ti represent binary outputs
-'''
 import matplotlib.pyplot as plt
 import numpy as np
 
 # Import basic dataset
 import nnfs
 nnfs.init()
+
+'''
+Binary logistic regression with Neural Network
+    - added sigmoid activation function
+    - added binary cross-entropy
+    - update data ti represent binary outputs
+'''
+
 # TODO: choose between 'vertical' and 'spiral' dataset
 dataset = 'spiral'
 

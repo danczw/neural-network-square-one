@@ -1,14 +1,16 @@
-'''
-Optimization of Neural Network weights and biases
-    - added root mean square propagation optimization
-        for each parameter (weights and biases)
-'''
 import matplotlib.pyplot as plt
 import numpy as np
 
 # Import basic dataset
 import nnfs
 nnfs.init()
+
+'''
+Optimization of Neural Network weights and biases
+    - added root mean square propagation optimization
+        for each parameter (weights and biases)
+'''
+
 # TODO: choose between 'vertical' and 'spiral' dataset
 dataset = 'spiral'
 

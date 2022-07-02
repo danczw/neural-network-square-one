@@ -1,3 +1,6 @@
+import numpy as np
+import random
+
 '''
 Dropout in forward pass
     - dropout layer disables some neurons, while others pass through unchanged
@@ -15,8 +18,6 @@ Dropout in forward pass
         a higher chance of learning underlying function that describes the data
     - implemented by setting neuron outputs to 0 with a certain probability
 '''
-
-import random
 
 # Hyperparameter for percentage of neurons to disable in that layer
 dropout_rate = 0.5
@@ -57,8 +58,6 @@ Implementation using Binomial distribution
         the results will be as above, sometimes no neurons zero out, or all
     - on average, these random draws will tend towards the probability desired
 '''
-
-import numpy as np
 
 # Simple example
 print(np.random.binomial(2, 0.5, size=10))

@@ -1,14 +1,15 @@
-'''
-Multi layer calculation of a Neural Network with batch input
-    - added foreward pass and activation function for first layer
-'''
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Import basic dataset
 import nnfs
 from nnfs.datasets import spiral_data
 nnfs.init()
+
+'''
+Multi layer calculation of a Neural Network with batch input
+    - added foreward pass and activation function for first layer
+'''
 
 # Define input
 X, y = spiral_data(100, 3)

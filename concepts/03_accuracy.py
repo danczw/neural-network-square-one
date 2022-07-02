@@ -1,11 +1,11 @@
+import numpy as np
+
 '''
 Calculating Neural Network accuracy
     - calculation of accuracy by comparing class target with prediction
     - describes how often the largest confidence is the correct class
         in terms of a fraction
 '''
-
-import numpy as np
 
 class_target = [0, 1, 1]
 

@@ -1,8 +1,9 @@
+import numpy as np
+
 '''
 Simple single layer calculation of a Neural Network without activation function
     - batch input version
 '''
-import numpy as np
 
 # Changed to batch input of [3,4], 3 batches of 4 inputs
 inputs = [[1.0, 2.0, 3.0, 2.5],

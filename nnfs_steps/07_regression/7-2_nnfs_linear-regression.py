@@ -1,9 +1,3 @@
-'''
-Linear Regression
-    - add linear activation function
-    - add Mean Squared Error loss function
-    - add Mean Absolute Error loss function
-'''
 import numpy as np
 
 # Import basic dataset
@@ -12,6 +6,14 @@ nnfs.init()
 
 # Update data for regression use case
 from nnfs.datasets import sine_data
+
+'''
+Linear Regression
+    - add linear activation function
+    - add Mean Squared Error loss function
+    - add Mean Absolute Error loss function
+'''
+
 X, y = sine_data()
 
 # Define class to initialize dense layer
