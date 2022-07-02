@@ -1,4 +1,4 @@
-# neural network from square one
+# Neural Network from Square One
 
 My take on building a Neural Network from the ground up in Python with minimal library usage, based on ['Neural Network from Scratch'](https://nnfs.io). The Neural Network demonstrates a classification task of artificially created data.
 
